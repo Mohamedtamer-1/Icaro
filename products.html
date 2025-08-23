@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Icaro Sweetpants</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="products.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>ICARO</h2>
+                <span>Sweetpants</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="products.html" class="nav-link active">Products</a>
+                </li>
+                <li class="nav-item">
+                    <a href="cart.html" class="nav-link">Cart</a>
+                </li>
+                <li class="nav-item">
+                    <a href="contact.html" class="nav-link">Contact</a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Products Hero -->
+    <section class="products-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Our Premium Collection</h1>
+                <p>Discover the perfect blend of comfort and style</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filters and Search -->
+    <section class="filters-section">
+        <div class="container">
+            <div class="filters-container">
+                <div class="search-box">
+                    <input type="text" placeholder="Search products..." id="searchInput">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="filter-options">
+                    <select id="categoryFilter">
+                        <option value="">All Categories</option>
+                        <option value="classic">Classic</option>
+                        <option value="sport">Sport</option>
+                        <option value="premium">Premium</option>
+                        <option value="casual">Casual</option>
+                    </select>
+                    <select id="sizeFilter">
+                        <option value="">All Sizes</option>
+                        <option value="S">Small</option>
+                        <option value="M">Medium</option>
+                        <option value="L">Large</option>
+                        <option value="XL">Extra Large</option>
+                    </select>
+                    <select id="priceFilter">
+                        <option value="">All Prices</option>
+                        <option value="0-25">Under $25</option>
+                        <option value="25-35">$25 - $35</option>
+                        <option value="35-50">$35 - $50</option>
+                        <option value="50+">Over $50</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Grid -->
+    <section class="products-section">
+        <div class="container">
+            <div class="products-grid" id="productsGrid">
+
+                <!-- Product 1 -->
+                <div class="product-card" data-category="classic" data-size="S,M,L,XL" data-price="29.99" data-thumbnails="design1a.jpg,design1b.jpg,design1c.jpg">
+                    <div class="product-image">
+                        <div class="image-placeholder"><img src="design1.jpg" alt="Design 1" class="design-photo"></div>
+                        <div class="product-overlay"><button class="quick-view">Quick View</button></div>
+                        <div class="product-badge">Best Seller</div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Classic Comfort</h3>
+                        <p class="product-description">Premium cotton blend with perfect fit</p>
+                        <div class="product-details"><span class="material">100% Cotton</span><span class="fit">Regular Fit</span></div>
+                        <p class="price">$29.99</p>
+                        <div class="product-actions"><button class="add-to-cart">Add to Cart</button><button class="wishlist"><i class="far fa-heart"></i></button></div>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card" data-category="sport" data-size="S,M,L,XL" data-price="34.99" data-thumbnails="design2a.jpg,design2b.jpg,design2c.jpg">
+                    <div class="product-image">
+                        <div class="image-placeholder"><img src="design2.jpg" alt="Design 2" class="design-photo"></div>
+                        <div class="product-overlay"><button class="quick-view">Quick View</button></div>
+                        <div class="product-badge new">New</div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Sport Style</h3>
+                        <p class="product-description">Lightweight and breathable for active lifestyle</p>
+                        <div class="product-details"><span class="material">Polyester Blend</span><span class="fit">Athletic Fit</span></div>
+                        <p class="price">$34.99</p>
+                        <div class="product-actions"><button class="add-to-cart">Add to Cart</button><button class="wishlist"><i class="far fa-heart"></i></button></div>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card" data-category="premium" data-size="M,L,XL" data-price="39.99" data-thumbnails="design3a.jpg,design3b.jpg,design3c.jpg">
+                    <div class="product-image">
+                        <div class="image-placeholder"><img src="design3.jpg" alt="Design 3" class="design-photo"></div>
+                        <div class="product-overlay"><button class="quick-view">Quick View</button></div>
+                        <div class="product-badge premium">Premium</div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Premium Fit</h3>
+                        <p class="product-description">Luxury comfort with superior craftsmanship</p>
+                        <div class="product-details"><span class="material">Organic Cotton</span><span class="fit">Slim Fit</span></div>
+                        <p class="price">$39.99</p>
+                        <div class="product-actions"><button class="add-to-cart">Add to Cart</button><button class="wishlist"><i class="far fa-heart"></i></button></div>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card" data-category="casual" data-size="S,M,L" data-price="24.99" data-thumbnails="design4a.jpg,design4b.jpg,design4c.jpg">
+                    <div class="product-image">
+                        <div class="image-placeholder"><img src="design4.jpg" alt="Design 4" class="design-photo"></div>
+                        <div class="product-overlay"><button class="quick-view">Quick View</button></div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Casual Comfort</h3>
+                        <p class="product-description">Perfect for everyday wear and relaxation</p>
+                        <div class="product-details"><span class="material">Cotton Blend</span><span class="fit">Relaxed Fit</span></div>
+                        <p class="price">$24.99</p>
+                        <div class="product-actions"><button class="add-to-cart">Add to Cart</button><button class="wishlist"><i class="far fa-heart"></i></button></div>
+                    </div>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="product-card" data-category="premium" data-size="S,M,L,XL" data-price="44.99" data-thumbnails="design5a.jpg,design5b.jpg,design5c.jpg">
+                    <div class="product-image">
+                        <div class="image-placeholder"><img src="design5.jpg" alt="Design 5" class="design-photo"></div>
+                        <div class="product-overlay"><button class="quick-view">Quick View</button></div>
+                        <div class="product-badge limited">Limited</div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Elite Collection</h3>
+                        <p class="product-description">Exclusive design with premium materials</p>
+                        <div class="product-details"><span class="material">Bamboo Blend</span><span class="fit">Modern Fit</span></div>
+                        <p class="price">$44.99</p>
+                        <div class="product-actions"><button class="add-to-cart">Add to Cart</button><button class="wishlist"><i class="far fa-heart"></i></button></div>
+                    </div>
+                </div>
+
+                <!-- Product 6 -->
+                <div class="product-card" data-category="sport" data-size="M,L,XL" data-price="32.99" data-thumbnails="design6a.jpg,design6b.jpg,design6c.jpg">
+                    <div class="product-image">
+                        <div class="image-placeholder"><img src="design6.jpg" alt="Design 6" class="design-photo"></div>
+                        <div class="product-overlay"><button class="quick-view">Quick View</button></div>
+                        <div class="product-badge sale">Sale</div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Active Performance</h3>
+                        <p class="product-description">High-performance fabric for maximum comfort</p>
+                        <div class="product-details"><span class="material">Moisture Wicking</span><span class="fit">Performance Fit</span></div>
+                        <p class="price">$32.99</p>
+                        <div class="product-actions"><button class="add-to-cart">Add to Cart</button><button class="wishlist"><i class="far fa-heart"></i></button></div>
+                    </div>
+                </div>
+
+                <!-- Product 7 -->
+                <div class="product-card" data-category="classic" data-size="S,M,L,XL" data-price="27.99" data-thumbnails="design7a.jpg,design7b.jpg,design7c.jpg">
+                    <div class="product-image">
+                        <div class="image-placeholder"><img src="design7.jpg" alt="Design 7" class="design-photo"></div>
+                        <div class="product-overlay"><button class="quick-view">Quick View</button></div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Timeless Classic</h3>
+                        <p class="product-description">Traditional comfort with modern style</p>
+                        <div class="product-details"><span class="material">Cotton</span><span class="fit">Classic Fit</span></div>
+                        <p class="price">$27.99</p>
+                        <div class="product-actions"><button class="add-to-cart">Add to Cart</button><button class="wishlist"><i class="far fa-heart"></i></button></div>
+                    </div>
+                </div>
+
+                <!-- Product 8 -->
+                <div class="product-card" data-category="casual" data-size="S,M,L,XL" data-price="22.99" data-thumbnails="design8a.jpg,design8b.jpg,design8c.jpg">
+                    <div class="product-image">
+                        <div class="image-placeholder"><img src="design8.jpg" alt="Design 8" class="design-photo"></div>
+                        <div class="product-overlay"><button class="quick-view">Quick View</button></div>
+                    </div>
+                    <div class="product-info">
+                        <h3>Weekend Comfort</h3>
+                        <p class="product-description">Ultimate relaxation for your downtime</p>
+                        <div class="product-details"><span class="material">Soft Cotton</span><span class="fit">Loose Fit</span></div>
+                        <p class="price">$22.99</p>
+                        <div class="product-actions"><button class="add-to-cart">Add to Cart</button><button class="wishlist"><i class="far fa-heart"></i></button></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Load More Button -->
+            <div class="load-more-container">
+                <button class="load-more-btn" id="loadMoreBtn">
+                    <span>Load More Products</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Icaro</h3>
+                    <p>Premium sweetpants for the modern lifestyle</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p><i class="fas fa-phone"></i> +1 234 567 890</p>
+                    <p><i class="fas fa-envelope"></i> info@icaro.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Fashion St, Style City</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Icaro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="products.js"></script>
+</body>
+</html>
