@@ -1192,17 +1192,19 @@
 
     /* ✅ Fixed: Keep 3 photos side-by-side */
     .designs-container {
-        flex-direction: row;         /* stay in one row */
-        justify-content: center;
-        gap: 0.5rem;                 /* reduce spacing */
-        flex-wrap: nowrap;
-        overflow-x: auto;            /* scroll if too wide */
-    }
-    .design-item {
-        flex: 0 0 30%;               /* ~3 items per row */
-        max-width: 30%;
-        height: auto;
-    }
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    height: auto;
+}
+.design-item {
+    flex: 1 1 33%;       /* each takes ~1/3 of container */
+    max-width: 33%;      /* not smaller than one-third */
+    height: auto;
+}
 
     /* Sections and cards */
     .vm-grid {
