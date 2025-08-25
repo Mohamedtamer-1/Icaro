@@ -1143,7 +1143,7 @@
         font-size: 0.7rem;
     }
     }
-    /* Tablets and small laptops */
+/* Tablets and small laptops */
     @media (max-width: 992px) {
     .about-content {
         grid-template-columns: 1fr;
@@ -1189,14 +1189,18 @@
         font-size: 1rem;
         padding: 0 1rem;
     }
+
+    /* ✅ Fixed: Keep 3 photos side-by-side */
     .designs-container {
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-        height: auto;
+        flex-direction: row;         /* stay in one row */
+        justify-content: center;
+        gap: 0.5rem;                 /* reduce spacing */
+        flex-wrap: nowrap;
+        overflow-x: auto;            /* scroll if too wide */
     }
     .design-item {
-        max-width: 90%;
+        flex: 0 0 30%;               /* ~3 items per row */
+        max-width: 30%;
         height: auto;
     }
 
