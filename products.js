@@ -715,6 +715,8 @@ class ProductCardEnhancements {
     addToCart(productCard, options = {}) {
         const productName = productCard.querySelector('h3').textContent;
         const productPrice = productCard.querySelector('.price').textContent;
+        const productImgEl = productCard.querySelector('.image-placeholder img, .design-photo');
+        const productImg = productImgEl ? productImgEl.src : '';
         const size = options.size || 'M';
         const quantity = options.quantity || 1;
 
@@ -736,6 +738,7 @@ class ProductCardEnhancements {
             price: productPrice,
             size: size,
             quantity: quantity,
+            image: productImg,
             id: Date.now()
         });
         localStorage.setItem('icaroCart', JSON.stringify(cart));

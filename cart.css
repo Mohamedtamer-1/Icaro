@@ -9,6 +9,55 @@
     overflow: hidden;
 }
 
+/* ICARO Theme Overrides (Dark Green/Beige) */
+.cart-hero { background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-surface) 100%) !important; }
+.cart-hero h1 { color: var(--color-accent) !important; background: none !important; -webkit-text-fill-color: initial !important; }
+.cart-hero p { color: var(--color-muted) !important; }
+.cart-section { background: var(--color-bg) !important; }
+.cart-items, .checkout-form { background: rgba(245,245,235,0.06) !important; border: 1px solid var(--color-border) !important; }
+.cart-header { border-bottom: 1px solid var(--color-border) !important; }
+.cart-header h2 { color: var(--color-accent) !important; }
+.clear-cart { background: rgba(245,245,235,0.08) !important; border: 1px solid var(--color-border) !important; color: var(--color-accent) !important; }
+.clear-cart:hover { background: rgba(245,245,235,0.12) !important; }
+.empty-cart p, .empty-cart h3 { color: var(--color-accent) !important; }
+.cart-item { background: rgba(245,245,235,0.03) !important; border: 1px solid rgba(245,245,235,0.1) !important; }
+.cart-item:hover { background: rgba(245,245,235,0.05) !important; }
+.cart-item-name { color: var(--color-accent) !important; }
+.cart-item-size, .cart-item-price { color: var(--color-accent) !important; }
+.quantity-controls { background: rgba(245,245,235,0.06) !important; }
+.quantity-btn { background: rgba(245,245,235,0.15) !important; color: var(--color-bg) !important; }
+.quantity-display { color: var(--color-accent) !important; }
+.remove-item { background: rgba(245,245,235,0.08) !important; border: 1px solid var(--color-border) !important; color: var(--color-accent) !important; }
+.form-section { background: rgba(245,245,235,0.03) !important; border: 1px solid rgba(245,245,235,0.1) !important; }
+.form-section h3 { color: var(--color-accent) !important; }
+.form-group label { color: var(--color-accent) !important; }
+.form-group input, .form-group select, .form-group textarea { background: rgba(245,245,235,0.08) !important; border: 1px solid var(--color-border) !important; color: var(--color-accent) !important; }
+.form-group input::placeholder, .form-group textarea::placeholder { color: var(--color-muted) !important; }
+.payment-method label { background: rgba(245,245,235,0.06) !important; border: 2px solid var(--color-border) !important; color: var(--color-muted) !important; }
+.payment-method input[type="radio"]:checked + label { background: rgba(245,245,235,0.08) !important; color: var(--color-accent) !important; border-color: var(--color-accent) !important; }
+.payment-details { background: rgba(245,245,235,0.06) !important; border: 1px solid var(--color-border) !important; }
+.bank-info h4 { color: var(--color-accent) !important; }
+.detail-item { border-bottom: 1px solid var(--color-border) !important; }
+.detail-item .label { color: var(--color-muted) !important; }
+.detail-item .value { color: var(--color-accent) !important; }
+.upload-area { border-color: var(--color-border) !important; background: rgba(245,245,235,0.06) !important; }
+.order-summary { background: rgba(245,245,235,0.06) !important; border: 1px solid var(--color-border) !important; }
+.summary-item { border-bottom: 1px solid var(--color-border) !important; }
+.summary-item .item-name { color: var(--color-muted) !important; }
+.summary-item .item-price { color: var(--color-accent) !important; }
+.summary-totals { border-top: 2px solid var(--color-border) !important; }
+.terms-link { color: var(--color-accent) !important; }
+.submit-order { background: transparent !important; color: var(--color-accent) !important; border: 1px solid var(--color-accent) !important; }
+.submit-order:hover { background: var(--color-accent) !important; color: var(--color-bg) !important; }
+.modal-content { background: var(--color-surface) !important; border: 1px solid var(--color-border) !important; }
+.modal-header { border-bottom: 1px solid var(--color-border) !important; }
+.modal-body p { color: var(--color-muted) !important; }
+.order-details { background: rgba(245,245,235,0.06) !important; }
+.detail-row { border-bottom: 1px solid var(--color-border) !important; }
+.continue-shopping { background: transparent !important; color: var(--color-accent) !important; border: 1px solid var(--color-accent) !important; }
+.continue-shopping:hover { background: rgba(245,245,235,0.12) !important; }
+.view-orders { background: var(--color-accent) !important; color: var(--color-bg) !important; border: 1px solid var(--color-accent) !important; }
+
 .cart-hero::before {
     content: '';
     position: absolute;

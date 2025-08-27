@@ -9,6 +9,45 @@
     overflow: hidden;
 }
 
+/* ICARO Theme Overrides (Dark Green/Beige) */
+.contact-hero { background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-surface) 100%) !important; }
+.contact-hero h1 { color: var(--color-accent) !important; background: none !important; -webkit-text-fill-color: initial !important; }
+.contact-hero p { color: var(--color-muted) !important; }
+.contact-section { background: var(--color-bg) !important; }
+.contact-info, .contact-form { background: rgba(245,245,235,0.06) !important; border: 1px solid var(--color-border) !important; }
+.info-header { border-bottom: 1px solid var(--color-border) !important; }
+.info-header h2 { color: var(--color-accent) !important; }
+.info-header p { color: var(--color-muted) !important; }
+.contact-method { background: rgba(245,245,235,0.03) !important; border: 1px solid rgba(245,245,235,0.1) !important; }
+.contact-method:hover { background: rgba(245,245,235,0.05) !important; border-color: var(--color-accent) !important; }
+.method-icon { background: rgba(245,245,235,0.08) !important; color: var(--color-accent) !important; }
+.method-details h3 { color: var(--color-accent) !important; }
+.method-details p { color: var(--color-muted) !important; }
+.social-links { border-top: 1px solid var(--color-border) !important; }
+.social-links h3 { color: var(--color-accent) !important; }
+.social-icon { background: transparent !important; border: 1px solid var(--color-border) !important; color: var(--color-accent) !important; }
+.social-icon:hover { background: var(--color-accent) !important; color: var(--color-bg) !important; border-color: var(--color-accent) !important; }
+.form-header { border-bottom: 1px solid var(--color-border) !important; }
+.form-header h2 { color: var(--color-accent) !important; }
+.form-header p { color: var(--color-muted) !important; }
+.form-group label { color: var(--color-accent) !important; }
+.form-group input, .form-group select, .form-group textarea { background: rgba(245,245,235,0.08) !important; border: 1px solid var(--color-border) !important; color: var(--color-accent) !important; }
+.form-group input::placeholder, .form-group textarea::placeholder { color: var(--color-muted) !important; }
+.faq-section { background: var(--color-bg) !important; }
+.faq-header h2 { color: var(--color-accent) !important; }
+.faq-header p { color: var(--color-muted) !important; }
+.faq-item { background: rgba(245,245,235,0.06) !important; border: 1px solid var(--color-border) !important; }
+.faq-item:hover { border-color: var(--color-accent) !important; }
+.faq-question h3 { color: var(--color-accent) !important; }
+.faq-answer { background: rgba(245,245,235,0.06) !important; }
+.map-section { background: var(--color-surface) !important; }
+.map-container { background: rgba(245,245,235,0.06) !important; border: 1px solid var(--color-border) !important; }
+.map-placeholder i { color: var(--color-accent) !important; }
+.map-placeholder h3 { color: var(--color-accent) !important; }
+.map-placeholder p { color: var(--color-muted) !important; }
+.view-map-btn { background: transparent !important; color: var(--color-accent) !important; border: 1px solid var(--color-accent) !important; }
+.view-map-btn:hover { background: var(--color-accent) !important; color: var(--color-bg) !important; }
+
 .contact-hero::before {
     content: '';
     position: absolute;

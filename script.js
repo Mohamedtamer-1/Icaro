@@ -698,7 +698,8 @@ document.addEventListener('DOMContentLoaded', () => {
     new SliderRevolution();
     new MobileNavigation();
     new SmoothScrolling();
-    new ProductAnimations();
+    // Enable guarded product interactions on homepage featured cards
+    initializeHomeFeaturedInteractions();
     new NavbarScroll();
 
     // Add loading animation
@@ -706,7 +707,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loader.className = 'page-loader';
     loader.innerHTML = `
         <div class="loader-content">
-            <div class="loader-logo">ICARO</div>
+            <img class="loader-logo" src="ICARU identity/beige ong.png" alt="ICARO" />
             <div class="loader-spinner"></div>
         </div>
     `;
@@ -716,7 +717,7 @@ document.addEventListener('DOMContentLoaded', () => {
         left: 0;
         width: 100%;
         height: 100%;
-        background: #0a0a0a;
+        background: var(--color-bg);
         z-index: 10000;
         display: flex;
         align-items: center;
@@ -729,18 +730,12 @@ document.addEventListener('DOMContentLoaded', () => {
         .loader-content {
             text-align: center;
         }
-        .loader-logo {
-            font-size: 3rem;
-            font-weight: 700;
-            color: #00d4ff;
-            margin-bottom: 2rem;
-            letter-spacing: 2px;
-        }
+        .loader-logo { height: 110px; width: auto; display: inline-block; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.35)); margin-bottom: 2rem; }
         .loader-spinner {
             width: 50px;
             height: 50px;
-            border: 3px solid rgba(0, 212, 255, 0.3);
-            border-top: 3px solid #00d4ff;
+            border: 3px solid rgba(245, 245, 235, 0.25);
+            border-top: 3px solid var(--color-accent);
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin: 0 auto;
@@ -764,3 +759,98 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 500);
     }, 1500);
 });
+
+// Lightweight interactions for homepage featured products
+function initializeHomeFeaturedInteractions() {
+    const cards = document.querySelectorAll('.featured-products .product-card');
+    if (!cards.length) return;
+
+    cards.forEach(card => {
+        const quickBtn = card.querySelector('.quick-view');
+        const name = card.querySelector('h3')?.textContent || 'Product';
+        const price = card.querySelector('.price')?.textContent || '$0.00';
+        const imgEl = card.querySelector('.image-placeholder img') || card.querySelector('img');
+        const imgSrc = imgEl ? imgEl.src : '';
+
+        if (quickBtn) {
+            quickBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                openQuickViewModal({ name, price, imgSrc });
+            });
+        }
+
+        const addBtn = card.querySelector('.add-to-cart');
+        if (addBtn) {
+            addBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const cart = JSON.parse(localStorage.getItem('icaroCart') || '[]');
+                cart.push({ name, price, image: imgSrc, id: Date.now(), size: 'M', quantity: 1 });
+                localStorage.setItem('icaroCart', JSON.stringify(cart));
+                showToast(`${name} added to cart!`);
+            });
+        }
+    });
+}
+
+function openQuickViewModal({ name, price, imgSrc }) {
+    const modal = document.createElement('div');
+    modal.className = 'quick-view-modal';
+    modal.innerHTML = `
+        <div class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>${name}</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:90vw;">
+                    <div class="product-preview" style="display:flex;align-items:center;justify-content:center;">
+                        <img src="${imgSrc}" alt="${name}" class="quickview-photo" style="width:100%;height:100%;max-height:60vh;object-fit:cover;border-radius:12px;"/>
+                    </div>
+                    <div class="product-details">
+                        <h4>${name}</h4>
+                        <p class="price">${price}</p>
+                        <div class="size-selector">
+                            <h5>Select Size:</h5>
+                            <div class="size-options">
+                                <button class="size-btn">S</button>
+                                <button class="size-btn">M</button>
+                                <button class="size-btn">L</button>
+                                <button class="size-btn">XL</button>
+                            </div>
+                        </div>
+                        <button class="add-to-cart-modal">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+
+    document.body.appendChild(modal);
+
+    const closeBtn = modal.querySelector('.close-modal');
+    const overlay = modal.querySelector('.modal-overlay');
+    const addBtn = modal.querySelector('.add-to-cart-modal');
+    const sizeBtns = modal.querySelectorAll('.size-btn');
+    let selectedSize = 'M';
+    sizeBtns.forEach(btn => btn.addEventListener('click', () => {
+        sizeBtns.forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedSize = btn.textContent;
+    }));
+    closeBtn.addEventListener('click', () => document.body.removeChild(modal));
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) document.body.removeChild(modal); });
+    addBtn.addEventListener('click', () => {
+        const cart = JSON.parse(localStorage.getItem('icaroCart') || '[]');
+        cart.push({ name, price, image: imgSrc, id: Date.now(), size: selectedSize, quantity: 1 });
+        localStorage.setItem('icaroCart', JSON.stringify(cart));
+        document.body.removeChild(modal);
+        showToast(`${name} (${selectedSize}) added to cart!`);
+    });
+}
+
+function showToast(message) {
+    const n = document.createElement('div');
+    n.textContent = message;
+    n.style.cssText = 'position:fixed;top:20px;right:20px;background:rgba(245,245,235,0.1);border:1px solid rgba(245,245,235,0.3);color:var(--color-accent);padding:10px 16px;border-radius:12px;z-index:10001;';
+    document.body.appendChild(n);
+    setTimeout(() => { if (n.parentNode) document.body.removeChild(n); }, 2500);
+}

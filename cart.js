@@ -42,7 +42,7 @@ class CartManager {
             });
         }
 
-        // Payment method selection
+        // Payment method selection (only mobile money now)
         const paymentMethods = document.querySelectorAll('input[name="paymentMethod"]');
         paymentMethods.forEach(method => {
             method.addEventListener('change', (e) => {
@@ -113,8 +113,8 @@ class CartManager {
         const totalPrice = price * (item.quantity || 1);
 
         cartItem.innerHTML = `
-            <div class="cart-item-image">
-                ${item.name.includes('Sport') || item.name.includes('Active') ? '🩳' : '👖'}
+            <div class="cart-item-image" style="overflow:hidden;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(245,245,235,0.06)">
+                ${item.image ? `<img src="${item.image}" alt="${item.name}" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:10px;"/>` : (item.name.includes('Sport') || item.name.includes('Active') ? '🩳' : '👖')}
             </div>
             <div class="cart-item-details">
                 <div class="cart-item-name">${item.name}</div>
@@ -216,20 +216,7 @@ class CartManager {
         }
     }
 
-    handlePaymentMethodChange(method) {
-        const bankTransferDetails = document.getElementById('bankTransferDetails');
-        
-        if (method === 'bankTransfer') {
-            if (bankTransferDetails) {
-                bankTransferDetails.style.display = 'block';
-                bankTransferDetails.style.animation = 'slideInUp 0.3s ease';
-            }
-        } else {
-            if (bankTransferDetails) {
-                bankTransferDetails.style.display = 'none';
-            }
-        }
-    }
+    handlePaymentMethodChange(method) { /* no-op since only mobile money remains */ }
 
     handleFileUpload(event) {
         const file = event.target.files[0];
