@@ -707,7 +707,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loader.className = 'page-loader';
     loader.innerHTML = `
         <div class="loader-content">
-            <img class="loader-logo" src="ICARU identity/beige ong.png" alt="ICARO" />
+            <img class="loader-logo" src="ICARU_identity/beige_ong.png" alt="ICARO" />
             <div class="loader-spinner"></div>
         </div>
     `;
