@@ -69,13 +69,13 @@ class ProductsPage {
             });
         }
 
-        // Load more button
-        const loadMoreBtn = document.getElementById('loadMoreBtn');
-        if (loadMoreBtn) {
-            loadMoreBtn.addEventListener('click', () => {
-                this.loadMoreProducts();
-            });
-        }
+        // Load more button - removed since we only have 4 products
+        // const loadMoreBtn = document.getElementById('loadMoreBtn');
+        // if (loadMoreBtn) {
+        //     loadMoreBtn.addEventListener('click', () => {
+        //         this.loadMoreProducts();
+        //     });
+        // }
 
         // Wishlist functionality
         document.addEventListener('click', (e) => {
@@ -165,36 +165,7 @@ class ProductsPage {
         console.log(`Showing ${count} of ${total} products`);
     }
 
-    loadMoreProducts() {
-        const loadMoreBtn = document.getElementById('loadMoreBtn');
-        if (loadMoreBtn) {
-            loadMoreBtn.innerHTML = '<span>Loading...</span><i class="fas fa-spinner fa-spin"></i>';
-            loadMoreBtn.disabled = true;
-        }
-
-        // Simulate loading more products
-        setTimeout(() => {
-            // Add more products to the grid
-            const productsGrid = document.getElementById('productsGrid');
-            if (productsGrid) {
-                // Clone existing products for demo
-                const existingProducts = productsGrid.querySelectorAll('.product-card');
-                const productsToAdd = Math.min(4, existingProducts.length);
-                
-                for (let i = 0; i < productsToAdd; i++) {
-                    const clone = existingProducts[i].cloneNode(true);
-                    clone.style.animation = 'scaleIn 0.6s ease forwards';
-                    productsGrid.appendChild(clone);
-                }
-            }
-
-            // Reset load more button
-            if (loadMoreBtn) {
-                loadMoreBtn.innerHTML = '<span>Load More Products</span><i class="fas fa-chevron-down"></i>';
-                loadMoreBtn.disabled = false;
-            }
-        }, 1500);
-    }
+    // loadMoreProducts method removed since we only have 4 products
 
     toggleWishlist(wishlistBtn) {
         const icon = wishlistBtn.querySelector('i');
@@ -732,7 +703,7 @@ class ProductCardEnhancements {
         }, 1500);
 
         // Store in localStorage
-        const cart = JSON.parse(localStorage.getItem('icaroCart') || '[]');
+        const cart = JSON.parse(localStorage.getItem('icaruCart') || '[]');
         cart.push({
             name: productName,
             price: productPrice,
@@ -741,7 +712,7 @@ class ProductCardEnhancements {
             image: productImg,
             id: Date.now()
         });
-        localStorage.setItem('icaroCart', JSON.stringify(cart));
+        localStorage.setItem('icaruCart', JSON.stringify(cart));
 
         this.showNotification(`${productName} (${size}) added to cart!`);
     }

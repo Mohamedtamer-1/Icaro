@@ -1,12 +1,14 @@
 // Cart and Checkout Functionality
 class CartManager {
     constructor() {
+        console.log('CartManager constructor called');
         this.cart = [];
-        this.shippingCost = 5.99;
+        this.shippingCost = 0;
         this.init();
     }
 
     init() {
+        console.log('CartManager init called');
         this.loadCart();
         this.bindEvents();
         this.updateCartDisplay();
@@ -14,14 +16,14 @@ class CartManager {
     }
 
     loadCart() {
-        const savedCart = localStorage.getItem('icaroCart');
+        const savedCart = localStorage.getItem('icaruCart');
         if (savedCart) {
             this.cart = JSON.parse(savedCart);
         }
     }
 
     saveCart() {
-        localStorage.setItem('icaroCart', JSON.stringify(this.cart));
+        localStorage.setItem('icaruCart', JSON.stringify(this.cart));
     }
 
     bindEvents() {
@@ -36,35 +38,34 @@ class CartManager {
         // Checkout form submission
         const checkoutForm = document.getElementById('checkoutForm');
         if (checkoutForm) {
+            console.log('Checkout form found, adding submit event listener');
             checkoutForm.addEventListener('submit', (e) => {
+                console.log('Form submitted!');
                 e.preventDefault();
                 this.processOrder();
             });
+        } else {
+            console.error('Checkout form not found!');
         }
 
-        // Payment method selection (only mobile money now)
-        const paymentMethods = document.querySelectorAll('input[name="paymentMethod"]');
-        paymentMethods.forEach(method => {
-            method.addEventListener('change', (e) => {
-                this.handlePaymentMethodChange(e.target.value);
-            });
-        });
-
-        // File upload handling
-        const fileUpload = document.getElementById('paymentReceipt');
-        if (fileUpload) {
-            fileUpload.addEventListener('change', (e) => {
-                this.handleFileUpload(e);
+        // Phone number validation
+        const phoneField = document.getElementById('phone');
+        if (phoneField) {
+            phoneField.addEventListener('input', (e) => {
+                this.validatePhoneNumber(e.target.value);
             });
         }
 
-        // Transfer amount validation
-        const transferAmount = document.getElementById('transferAmount');
-        if (transferAmount) {
-            transferAmount.addEventListener('input', (e) => {
-                this.validateTransferAmount(e.target.value);
+        // Governorate change event for shipping cost
+        const governorateSelect = document.getElementById('governorate');
+        if (governorateSelect) {
+            governorateSelect.addEventListener('change', (e) => {
+                this.updateShippingCost(e.target.value);
             });
         }
+
+        // Auto-populate product name and quantity when cart changes
+        this.updateProductFields();
     }
 
     updateCartDisplay() {
@@ -90,6 +91,101 @@ class CartManager {
                 this.renderCartItems();
             }
         }
+
+        // Update product fields
+        this.updateProductFields();
+    }
+
+    updateProductFields() {
+        const productNameField = document.getElementById('productName');
+        const productQuantityField = document.getElementById('productQuantity');
+        const productSizeField = document.getElementById('productSize');
+        const multipleProductsSection = document.getElementById('multipleProductsSection');
+        const productsFieldsContainer = document.getElementById('productsFieldsContainer');
+        
+        if (this.cart.length === 0) {
+            if (productNameField) productNameField.value = '';
+            if (productQuantityField) productQuantityField.value = '';
+            if (productSizeField) productSizeField.value = '';
+            if (multipleProductsSection) multipleProductsSection.style.display = 'none';
+            return;
+        }
+
+        if (this.cart.length === 1) {
+            // Single product - use the main fields
+            const product = this.cart[0];
+            if (productNameField) productNameField.value = product.name;
+            if (productQuantityField) productQuantityField.value = product.quantity || 1;
+            if (productSizeField) productSizeField.value = product.size || 'M';
+            if (multipleProductsSection) multipleProductsSection.style.display = 'none';
+        } else {
+            // Multiple products - hide main fields and show multiple products section
+            if (productNameField) productNameField.value = '';
+            if (productQuantityField) productQuantityField.value = '';
+            if (productSizeField) productSizeField.value = '';
+            if (multipleProductsSection) multipleProductsSection.style.display = 'block';
+            
+            this.generateMultipleProductFields();
+        }
+    }
+
+    generateMultipleProductFields() {
+        const productsFieldsContainer = document.getElementById('productsFieldsContainer');
+        if (!productsFieldsContainer) return;
+
+        productsFieldsContainer.innerHTML = '';
+
+        this.cart.forEach((item, index) => {
+            const productField = document.createElement('div');
+            productField.className = 'product-field';
+            productField.style.cssText = 'background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 10px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);';
+
+            productField.innerHTML = `
+                <h4 style="color: #00d4ff; margin-bottom: 1rem; font-size: 1rem;">Product ${index + 1}</h4>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Product Name</label>
+                        <input type="text" value="${item.name}" readonly style="background: rgba(255,255,255,0.1); color: #cccccc;">
+                    </div>
+                    <div class="form-group">
+                        <label>Size</label>
+                        <input type="text" value="${item.size || 'M'}" readonly style="background: rgba(255,255,255,0.1); color: #cccccc;">
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity</label>
+                        <input type="number" value="${item.quantity || 1}" readonly style="background: rgba(255,255,255,0.1); color: #cccccc;">
+                    </div>
+                </div>
+            `;
+
+            productsFieldsContainer.appendChild(productField);
+        });
+    }
+
+    updateShippingCost(governorate) {
+        const governorateSelect = document.getElementById('governorate');
+        if (!governorateSelect) return;
+
+        const selectedOption = governorateSelect.querySelector(`option[value="${governorate}"]`);
+        if (selectedOption) {
+            const shippingCost = parseInt(selectedOption.getAttribute('data-shipping')) || 0;
+            this.shippingCost = shippingCost;
+            this.updateOrderSummary();
+        }
+    }
+
+    validatePhoneNumber(phone) {
+        const phoneField = document.getElementById('phone');
+        if (!phoneField) return;
+        
+        // Check if phone starts with "01"
+        if (!phone.startsWith('01')) {
+            phoneField.style.borderColor = '#ff6b6b';
+            phoneField.style.boxShadow = '0 0 20px rgba(255, 107, 107, 0.2)';
+        } else {
+            phoneField.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+            phoneField.style.boxShadow = 'none';
+        }
     }
 
     renderCartItems() {
@@ -109,7 +205,7 @@ class CartManager {
         cartItem.className = 'cart-item';
         cartItem.style.animationDelay = `${index * 0.1}s`;
 
-        const price = parseFloat(item.price.replace('$', ''));
+        const price = parseFloat(item.price.replace(' EGP', ''));
         const totalPrice = price * (item.quantity || 1);
 
         cartItem.innerHTML = `
@@ -119,7 +215,7 @@ class CartManager {
             <div class="cart-item-details">
                 <div class="cart-item-name">${item.name}</div>
                 <div class="cart-item-size">Size: ${item.size || 'M'}</div>
-                <div class="cart-item-price">$${totalPrice.toFixed(2)}</div>
+                <div class="cart-item-price">${totalPrice.toFixed(2)} EGP</div>
             </div>
             <div class="cart-item-actions">
                 <div class="quantity-controls">
@@ -177,9 +273,10 @@ class CartManager {
     updateOrderSummary() {
         const summaryItems = document.getElementById('summaryItems');
         const subtotalElement = document.getElementById('subtotal');
+        const shippingElement = document.getElementById('shipping');
         const totalElement = document.getElementById('total');
 
-        if (!summaryItems || !subtotalElement || !totalElement) return;
+        if (!summaryItems || !subtotalElement || !shippingElement || !totalElement) return;
 
         // Clear existing summary items
         summaryItems.innerHTML = '';
@@ -188,7 +285,7 @@ class CartManager {
 
         // Add each cart item to summary
         this.cart.forEach(item => {
-            const price = parseFloat(item.price.replace('$', ''));
+            const price = parseFloat(item.price.replace(' EGP', ''));
             const quantity = item.quantity || 1;
             const itemTotal = price * quantity;
             subtotal += itemTotal;
@@ -197,7 +294,7 @@ class CartManager {
             summaryItem.className = 'summary-item';
             summaryItem.innerHTML = `
                 <span class="item-name">${item.name} (${item.size || 'M'}) x${quantity}</span>
-                <span class="item-price">$${itemTotal.toFixed(2)}</span>
+                <span class="item-price">${itemTotal.toFixed(2)} EGP</span>
             `;
             summaryItems.appendChild(summaryItem);
         });
@@ -205,116 +302,90 @@ class CartManager {
         // Update totals
         const total = subtotal + this.shippingCost;
         
-        subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
-        totalElement.textContent = `$${total.toFixed(2)}`;
-
-        // Update transfer amount field
-        const transferAmount = document.getElementById('transferAmount');
-        if (transferAmount) {
-            transferAmount.value = total.toFixed(2);
-            transferAmount.placeholder = `Enter $${total.toFixed(2)}`;
-        }
+        subtotalElement.textContent = `${subtotal.toFixed(2)} EGP`;
+        shippingElement.textContent = `${this.shippingCost.toFixed(2)} EGP`;
+        totalElement.textContent = `${total.toFixed(2)} EGP`;
     }
 
-    handlePaymentMethodChange(method) { /* no-op since only mobile money remains */ }
-
-    handleFileUpload(event) {
-        const file = event.target.files[0];
-        const uploadArea = document.querySelector('.upload-area');
-        
-        if (file) {
-            // Validate file type
-            const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'];
-            if (!allowedTypes.includes(file.type)) {
-                this.showNotification('Please upload a valid file (PNG, JPG, or PDF)', 'error');
-                event.target.value = '';
-                return;
-            }
-
-            // Validate file size (10MB limit)
-            if (file.size > 10 * 1024 * 1024) {
-                this.showNotification('File size must be less than 10MB', 'error');
-                event.target.value = '';
-                return;
-            }
-
-            // Update upload area
-            if (uploadArea) {
-                uploadArea.innerHTML = `
-                    <i class="fas fa-check-circle" style="color: #00ff88;"></i>
-                    <p>${file.name}</p>
-                    <span>File uploaded successfully</span>
-                `;
-                uploadArea.style.borderColor = '#00ff88';
-                uploadArea.style.background = 'rgba(0, 255, 136, 0.1)';
-            }
-
-            this.showNotification('File uploaded successfully');
-        }
-    }
-
-    validateTransferAmount(amount) {
-        const total = this.calculateTotal();
-        const transferAmount = parseFloat(amount);
-        const transferAmountField = document.getElementById('transferAmount');
-
-        if (transferAmountField) {
-            if (transferAmount < total) {
-                transferAmountField.style.borderColor = '#ff6b6b';
-                transferAmountField.style.boxShadow = '0 0 20px rgba(255, 107, 107, 0.2)';
-            } else if (transferAmount === total) {
-                transferAmountField.style.borderColor = '#00ff88';
-                transferAmountField.style.boxShadow = '0 0 20px rgba(0, 255, 136, 0.2)';
-            } else {
-                transferAmountField.style.borderColor = '#f59e0b';
-                transferAmountField.style.boxShadow = '0 0 20px rgba(245, 158, 11, 0.2)';
-            }
-        }
+    completeOrder() {
+        // This method is called after order processing simulation
+        // You can add any additional order completion logic here
+        this.showNotification('Order completed successfully!', 'success');
     }
 
     calculateTotal() {
         let subtotal = 0;
         this.cart.forEach(item => {
-            const price = parseFloat(item.price.replace('$', ''));
-            const quantity = item.quantity || 1;
-            subtotal += price * quantity;
+            subtotal += (item.price * (item.quantity || 1));
         });
         return subtotal + this.shippingCost;
     }
 
     processOrder() {
+        console.log('Processing order...');
+        console.log('Cart items:', this.cart);
+        console.log('Shipping cost:', this.shippingCost);
+        
         // Validate form
         if (!this.validateForm()) {
+            console.log('Form validation failed');
             return;
         }
 
-        // Validate transfer amount
-        const transferAmount = parseFloat(document.getElementById('transferAmount').value);
-        const total = this.calculateTotal();
+        // Collect form data
+        const formData = new FormData(document.getElementById('checkoutForm'));
+        const selectedPaymentMethods = [];
+        document.querySelectorAll('input[name="paymentMethod"]:checked').forEach(method => {
+            selectedPaymentMethods.push(method.value);
+        });
 
-        if (transferAmount < total) {
-            this.showNotification('Transfer amount must be at least the total order amount', 'error');
-            return;
+        // Generate order number
+        const orderNumber = 'ICARU-' + Date.now();
+
+        // Calculate total
+        let subtotal = 0;
+        this.cart.forEach(item => {
+            const price = parseFloat(item.price.replace(' EGP', ''));
+            subtotal += (price * (item.quantity || 1));
+        });
+        const totalAmount = subtotal + this.shippingCost;
+
+        const orderData = {
+            orderNumber: orderNumber,
+            firstName: formData.get('firstName'),
+            lastName: formData.get('lastName'),
+            phone: formData.get('phone'),
+            address: formData.get('address'),
+            city: formData.get('city'),
+            governorate: formData.get('governorate'),
+            paymentMethod: selectedPaymentMethods.join(", "),
+            productName: formData.get('productName'),
+            productSize: formData.get('productSize'),
+            productQuantity: formData.get('productQuantity'),
+            items: this.cart,
+            totalAmount: totalAmount,
+            date: new Date().toLocaleString()
+        };
+
+        // Update order total in modal
+        const orderTotalElement = document.getElementById('orderTotal');
+        if (orderTotalElement) {
+            orderTotalElement.textContent = `${totalAmount.toFixed(2)} EGP`;
         }
 
-        // Show loading state
-        const submitBtn = document.querySelector('.submit-order');
-        const originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-        submitBtn.disabled = true;
-
-        // Simulate order processing
-        setTimeout(() => {
-            this.completeOrder();
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
-        }, 2000);
+        // Send order data
+        this.sendOrderData(orderData);
     }
 
     validateForm() {
+        // Check if cart is empty
+        if (this.cart.length === 0) {
+            this.showNotification('Your cart is empty. Please add items before placing an order.', 'error');
+            return false;
+        }
+
         const requiredFields = [
-            'firstName', 'lastName', 'email', 'phone', 'address', 
-            'city', 'state', 'zipCode', 'country', 'transferNumber', 'transferAmount'
+            'firstName', 'lastName', 'phone', 'address', 'city', 'governorate'
         ];
 
         let isValid = true;
@@ -329,31 +400,21 @@ class CartManager {
             }
         });
 
-        // Validate email
-        const email = document.getElementById('email');
-        if (email && email.value) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email.value)) {
-                this.highlightError(email);
-                this.showNotification('Please enter a valid email address', 'error');
-                isValid = false;
-            }
-        }
-
-        // Validate phone
+        // Validate phone starts with "01"
         const phone = document.getElementById('phone');
         if (phone && phone.value) {
-            const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
-            if (!phoneRegex.test(phone.value.replace(/\s/g, ''))) {
+            if (!phone.value.startsWith('01')) {
                 this.highlightError(phone);
-                this.showNotification('Please enter a valid phone number', 'error');
+                this.showNotification('Phone number must start with 01', 'error');
                 isValid = false;
+            } else {
+                this.clearError(phone);
             }
         }
 
-        // Check payment method
-        const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
-        if (!paymentMethod) {
+        // Check payment method (only cash on delivery now)
+        const paymentMethods = document.querySelectorAll('input[name="paymentMethod"]:checked');
+        if (paymentMethods.length === 0) {
             this.showNotification('Please select a payment method', 'error');
             isValid = false;
         }
@@ -365,10 +426,10 @@ class CartManager {
             isValid = false;
         }
 
-        // Check file upload
-        const fileUpload = document.getElementById('paymentReceipt');
-        if (fileUpload && !fileUpload.files[0]) {
-            this.showNotification('Please upload your payment receipt', 'error');
+        // Check newsletter agreement (now required)
+        const newsletter = document.getElementById('newsletter');
+        if (newsletter && !newsletter.checked) {
+            this.showNotification('Please agree to the exchange and delivery fee policy', 'error');
             isValid = false;
         }
 
@@ -387,91 +448,141 @@ class CartManager {
         field.style.animation = 'none';
     }
 
-    completeOrder() {
-        // Generate order number
-        const orderNumber = `#ICARO-${new Date().getFullYear()}-${String(Date.now()).slice(-6)}`;
-        
-        // Update modal with order details
-        const orderNumberElement = document.getElementById('orderNumber');
-        const orderTotalElement = document.getElementById('orderTotal');
-        
-        if (orderNumberElement) {
-            orderNumberElement.textContent = orderNumber;
-        }
-        
-        if (orderTotalElement) {
-            orderTotalElement.textContent = `$${this.calculateTotal().toFixed(2)}`;
-        }
+    sendOrderData(orderData) {
+        // Prepare the data for EmailJS with individual fields
+        const cartItemsText = orderData.items.map(item => 
+            `• ${item.name} (Size: ${item.size || 'M'}, Qty: ${item.quantity || 1}, Price: ${item.price})`
+        ).join('\n');
 
-        // Show confirmation modal
-        const modal = document.getElementById('confirmationModal');
-        if (modal) {
-            modal.classList.add('show');
-        }
-
-        // Clear cart
-        this.cart = [];
-        this.saveCart();
-        this.updateCartDisplay();
-
-        // Send order data (in a real app, this would go to a server)
-        this.sendOrderData(orderNumber);
-    }
-
-    sendOrderData(orderNumber) {
-        // Collect form data
-        const formData = new FormData(document.getElementById('checkoutForm'));
-        const orderData = {
-            orderNumber: orderNumber,
-            customer: {
-                firstName: formData.get('firstName'),
-                lastName: formData.get('lastName'),
-                email: formData.get('email'),
-                phone: formData.get('phone'),
-                address: formData.get('address'),
-                city: formData.get('city'),
-                state: formData.get('state'),
-                zipCode: formData.get('zipCode'),
-                country: formData.get('country')
-            },
-            payment: {
-                method: formData.get('paymentMethod'),
-                transferNumber: formData.get('transferNumber'),
-                transferAmount: formData.get('transferAmount'),
-                receipt: formData.get('paymentReceipt')
-            },
-            items: this.cart,
-            total: this.calculateTotal(),
-            date: new Date().toISOString()
+        const templateParams = {
+            to_name: 'Icaru Shop',
+            from_name: `${orderData.firstName} ${orderData.lastName}`,
+            from_email: 'customer@icaru.com',
+            customer_name: `${orderData.firstName} ${orderData.lastName}`,
+            customer_phone: orderData.phone,
+            customer_address: orderData.address,
+            customer_city: orderData.city,
+            customer_governorate: orderData.governorate,
+            payment_method: orderData.paymentMethod,
+            product_name: orderData.productName || 'Multiple Products',
+            product_size: orderData.productSize || 'Various',
+            product_quantity: orderData.productQuantity || 'Multiple',
+            total_amount: `${orderData.totalAmount.toFixed(2)} EGP`,
+            shipping_cost: `${this.shippingCost.toFixed(2)} EGP`,
+            order_number: orderData.orderNumber,
+            cart_items: cartItemsText,
+            order_date: new Date().toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            })
         };
 
-        // In a real application, you would send this data to your server
+        // Debug: Log the template parameters
+        console.log('EmailJS Template Parameters:', templateParams);
         console.log('Order Data:', orderData);
+
+        // Also create a fallback message field in case individual fields don't work
+        const fallbackMessage = `
+NEW ORDER RECEIVED!
+
+Customer Information:
+- Name: ${orderData.firstName} ${orderData.lastName}
+- Phone: ${orderData.phone}
+- Address: ${orderData.address}
+- City: ${orderData.city}
+- Governorate: ${orderData.governorate}
+
+Order Details:
+- Payment Method: ${orderData.paymentMethod}
+- Order Number: ${orderData.orderNumber}
+- Total Amount: ${orderData.totalAmount.toFixed(2)} EGP
+- Shipping Cost: ${this.shippingCost.toFixed(2)} EGP
+
+Cart Items:
+${cartItemsText}
+
+Order Date: ${new Date().toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+})}
+        `.trim();
+
+        // Add fallback message to template params
+        templateParams.message = fallbackMessage;
+
+        // Send email using EmailJS
+        console.log('Sending email with EmailJS...');
+        console.log('Service ID: service_icaru');
+        console.log('Template ID: template_icaru');
         
-        // Simulate sending to server
-        this.showNotification('Order submitted successfully!');
+        // Test if EmailJS is properly loaded
+        if (typeof emailjs === 'undefined') {
+            console.error('EmailJS is not loaded!');
+            this.showNotification('EmailJS not loaded. Please check configuration.', 'error');
+            return;
+        }
+        
+        emailjs.send('service_j5hc49k', 'template_4kdiezw', templateParams)
+            .then((response) => {
+                console.log('SUCCESS!', response.status, response.text);
+                this.showNotification('Order submitted successfully! we recieved your order and will contact you soon.', 'success');
+                
+                // Clear cart after successful submission
+                this.cart = [];
+                this.saveCart();
+                this.updateCartDisplay();
+                this.updateOrderSummary();
+                
+                // Reset form
+                document.getElementById('checkoutForm').reset();
+                
+                // Hide multiple products section
+                const multipleProductsSection = document.getElementById('multipleProductsSection');
+                if (multipleProductsSection) {
+                    multipleProductsSection.style.display = 'none';
+                }
+            })
+            .catch((error) => {
+                console.error('EmailJS FAILED:', error);
+                console.error('Error details:', {
+                    status: error.status,
+                    text: error.text,
+                    message: error.message
+                });
+                this.showNotification(`Failed to submit order: ${error.text || error.message}`, 'error');
+            });
     }
+    
 
     showNotification(message, type = 'success') {
         const notification = document.createElement('div');
         notification.className = 'notification';
         notification.textContent = message;
         
-        const bgColor = type === 'error' ? 'linear-gradient(45deg, #ff6b6b, #ee5a52)' : 'linear-gradient(45deg, #00d4ff, #0099cc)';
+        const bgColor = type === 'error' ? 'linear-gradient(45deg, #ff6b6b, #ee5a52)' : 'linear-gradient(45deg,rgb(9, 143, 80),rgb(38, 126, 74))';
         
         notification.style.cssText = `
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             background: ${bgColor};
             color: #ffffff;
-            padding: 1rem 2rem;
-            border-radius: 25px;
+            padding: 3rem 4.5rem;
+            border-radius: 40px;
             z-index: 10001;
             animation: slideInRight 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            font-weight: 600;
-            max-width: 300px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+            font-weight: 700;
+            font-size: 2rem;
+            max-width: 900px;
+            text-align: center;
         `;
 
         document.body.appendChild(notification);
@@ -512,5 +623,7 @@ document.head.appendChild(style);
 // Initialize cart manager when DOM is loaded
 let cartManager;
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM loaded, initializing CartManager');
     cartManager = new CartManager();
+    console.log('CartManager initialized:', cartManager);
 });

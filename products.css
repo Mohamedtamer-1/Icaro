@@ -9,7 +9,7 @@
     overflow: hidden;
 }
 
-/* ICARO Theme Overrides (Dark Green/Beige) */
+/* ICARU Theme Overrides (Dark Green/Beige) */
 .products-hero { background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-surface) 100%) !important; }
 .hero-content h1 { color: var(--color-accent) !important; background: none !important; -webkit-text-fill-color: initial !important; }
 .hero-content p { color: var(--color-muted) !important; }

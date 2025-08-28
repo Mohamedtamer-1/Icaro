@@ -163,16 +163,16 @@ class ContactPage {
         let platform = '';
 
         if (iconClass.includes('facebook')) {
-            url = 'https://facebook.com/icaro';
+            url = 'https://facebook.com/icaru';
             platform = 'Facebook';
         } else if (iconClass.includes('instagram')) {
-            url = 'https://instagram.com/icaro';
+            url = 'https://instagram.com/icaru';
             platform = 'Instagram';
         } else if (iconClass.includes('twitter')) {
-            url = 'https://twitter.com/icaro';
+            url = 'https://twitter.com/icaru';
             platform = 'Twitter';
         } else if (iconClass.includes('linkedin')) {
-            url = 'https://linkedin.com/company/icaro';
+            url = 'https://linkedin.com/company/icaru';
             platform = 'LinkedIn';
         }
 

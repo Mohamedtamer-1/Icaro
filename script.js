@@ -398,13 +398,13 @@ class ProductAnimations {
         }, 1500);
 
         // Store in localStorage (simple cart implementation)
-        const cart = JSON.parse(localStorage.getItem('icaroCart') || '[]');
+        const cart = JSON.parse(localStorage.getItem('icaruCart') || '[]');
         cart.push({
             name: productName,
             price: productPrice,
             id: Date.now()
         });
-        localStorage.setItem('icaroCart', JSON.stringify(cart));
+        localStorage.setItem('icaruCart', JSON.stringify(cart));
 
         // Show notification
         this.showNotification(`${productName} added to cart!`);
@@ -707,7 +707,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loader.className = 'page-loader';
     loader.innerHTML = `
         <div class="loader-content">
-            <img class="loader-logo" src="ICARU_identity/beige_ong.png" alt="ICARO" />
+                            <img class="loader-logo" src="ICARU_identity/beige_ong.png" alt="ICARU" />
             <div class="loader-spinner"></div>
         </div>
     `;
@@ -768,7 +768,7 @@ function initializeHomeFeaturedInteractions() {
     cards.forEach(card => {
         const quickBtn = card.querySelector('.quick-view');
         const name = card.querySelector('h3')?.textContent || 'Product';
-        const price = card.querySelector('.price')?.textContent || '$0.00';
+        const price = card.querySelector('.price')?.textContent || '0.00 EGP';
         const imgEl = card.querySelector('.image-placeholder img') || card.querySelector('img');
         const imgSrc = imgEl ? imgEl.src : '';
 
@@ -783,9 +783,9 @@ function initializeHomeFeaturedInteractions() {
         if (addBtn) {
             addBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                const cart = JSON.parse(localStorage.getItem('icaroCart') || '[]');
+                const cart = JSON.parse(localStorage.getItem('icaruCart') || '[]');
                 cart.push({ name, price, image: imgSrc, id: Date.now(), size: 'M', quantity: 1 });
-                localStorage.setItem('icaroCart', JSON.stringify(cart));
+                localStorage.setItem('icaruCart', JSON.stringify(cart));
                 showToast(`${name} added to cart!`);
             });
         }
@@ -839,9 +839,9 @@ function openQuickViewModal({ name, price, imgSrc }) {
     closeBtn.addEventListener('click', () => document.body.removeChild(modal));
     overlay.addEventListener('click', (e) => { if (e.target === overlay) document.body.removeChild(modal); });
     addBtn.addEventListener('click', () => {
-        const cart = JSON.parse(localStorage.getItem('icaroCart') || '[]');
+        const cart = JSON.parse(localStorage.getItem('icaruCart') || '[]');
         cart.push({ name, price, image: imgSrc, id: Date.now(), size: selectedSize, quantity: 1 });
-        localStorage.setItem('icaroCart', JSON.stringify(cart));
+        localStorage.setItem('icaruCart', JSON.stringify(cart));
         document.body.removeChild(modal);
         showToast(`${name} (${selectedSize}) added to cart!`);
     });
