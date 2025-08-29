@@ -1,0 +1,604 @@
+    /* Admin Panel Specific Styles */
+
+    /* Login Screen */
+    .login-screen {
+        min-height: 100vh;
+        background: var(--color-bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .login-screen::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23f5f5eb" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        opacity: 0.3;
+    }
+    
+    .login-container {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        max-width: 400px;
+        padding: 0 20px;
+    }
+    
+    .login-card {
+        background: rgba(245, 245, 235, 0.06);
+        border: 1px solid var(--color-border);
+        border-radius: 20px;
+        padding: 3rem 2rem;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        animation: slideInUp 0.6s ease;
+    }
+    
+    .login-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .login-logo {
+        width: 80px;
+        height: auto;
+        margin-bottom: 1rem;
+        filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+    }
+    
+    .login-header h2 {
+        color: var(--color-accent);
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+    
+    .login-header p {
+        color: var(--color-muted);
+        font-size: 0.9rem;
+    }
+    
+    .login-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .form-group {
+        position: relative;
+    }
+    
+    .form-group label {
+        display: block;
+        color: var(--color-accent);
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .form-group input {
+        width: 100%;
+        padding: 15px 50px 15px 20px;
+        background: rgba(245, 245, 235, 0.08);
+        border: 1px solid var(--color-border);
+        border-radius: 25px;
+        color: var(--color-accent);
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .form-group input:focus {
+        outline: none;
+        border-color: var(--color-accent);
+        box-shadow: 0 0 20px rgba(245, 245, 235, 0.1);
+        background: rgba(245, 245, 235, 0.12);
+    }
+    
+    .form-group input::placeholder {
+        color: var(--color-muted);
+    }
+    
+    .form-group i {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--color-muted);
+        pointer-events: none;
+        margin-top: 12px;
+    }
+    
+    .login-btn {
+        padding: 15px 30px;
+        background: transparent;
+        border: 1px solid var(--color-accent);
+        color: var(--color-accent);
+        border-radius: 25px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        font-size: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .login-btn:hover {
+        background: var(--color-accent);
+        color: var(--color-bg);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(245, 245, 235, 0.2);
+    }
+    
+    .login-btn i {
+        transition: transform 0.3s ease;
+    }
+    
+    .login-btn:hover i {
+        transform: translateX(5px);
+    }
+    
+    .login-error {
+        color: #ff6b6b;
+        font-size: 0.9rem;
+        text-align: center;
+        margin-top: 1rem;
+        padding: 10px;
+        background: rgba(255, 107, 107, 0.1);
+        border: 1px solid rgba(255, 107, 107, 0.2);
+        border-radius: 10px;
+        display: none;
+    }
+    
+    /* Admin Dashboard */
+    .admin-dashboard {
+        min-height: 100vh;
+        background: var(--color-bg);
+        padding-top: 80px;
+    }
+    
+    .admin-header {
+        background: var(--color-surface);
+        padding: 2rem 0;
+        border-bottom: 1px solid var(--color-border);
+    }
+    
+    .admin-header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .admin-title h1 {
+        color: var(--color-accent);
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        font-weight: 700;
+    }
+    
+    .admin-title p {
+        color: var(--color-muted);
+        font-size: 1.1rem;
+    }
+    
+    .admin-actions {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+    
+    .save-btn,
+    .logout-btn {
+        padding: 12px 24px;
+        border-radius: 25px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        border: none;
+    }
+    
+    .save-btn {
+        background: transparent;
+        border: 1px solid var(--color-accent);
+        color: var(--color-accent);
+    }
+    
+    .save-btn:hover {
+        background: var(--color-accent);
+        color: var(--color-bg);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(245, 245, 235, 0.2);
+    }
+    
+    .save-btn.has-changes {
+        background: #00ff88;
+        border-color: #00ff88;
+        color: var(--color-bg);
+        animation: pulse 2s infinite;
+    }
+    
+    .logout-btn {
+        background: transparent;
+        border: 1px solid #ff6b6b;
+        color: #ff6b6b;
+    }
+    
+    .logout-btn:hover {
+        background: #ff6b6b;
+        color: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(255, 107, 107, 0.2);
+    }
+    
+    /* Admin Stats */
+    .admin-stats {
+        padding: 3rem 0;
+        background: var(--color-bg);
+    }
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+    }
+    
+    .stat-card {
+        background: rgba(245, 245, 235, 0.06);
+        border: 1px solid var(--color-border);
+        border-radius: 20px;
+        padding: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(245, 245, 235, 0.1);
+        border-color: rgba(245, 245, 235, 0.3);
+    }
+    
+    .stat-icon {
+        width: 60px;
+        height: 60px;
+        background: rgba(245, 245, 235, 0.08);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: var(--color-accent);
+    }
+    
+    .stat-info h3 {
+        color: var(--color-accent);
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-info p {
+        color: var(--color-muted);
+        font-size: 0.9rem;
+    }
+    
+    /* Product Management */
+    .product-management {
+        padding: 3rem 0;
+        background: var(--color-surface);
+    }
+    
+    .admin-products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+    
+    .admin-product-card {
+        background: rgba(245, 245, 235, 0.06);
+        border: 1px solid var(--color-border);
+        border-radius: 20px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    
+    .admin-product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(245, 245, 235, 0.1);
+        border-color: rgba(245, 245, 235, 0.3);
+    }
+    
+    .admin-product-card.deleted {
+        opacity: 0.5;
+        transform: scale(0.95);
+        border-color: #ff6b6b;
+    }
+    
+    .admin-product-image {
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(45deg, #0e251d, #143329);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .admin-product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .delete-product-btn {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        width: 40px;
+        height: 40px;
+        background: rgba(255, 107, 107, 0.9);
+        border: none;
+        border-radius: 50%;
+        color: #ffffff;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        opacity: 0;
+    }
+    
+    .admin-product-card:hover .delete-product-btn {
+        opacity: 1;
+    }
+    
+    .delete-product-btn:hover {
+        background: #ff5252;
+        transform: scale(1.1);
+    }
+    
+    .admin-product-info {
+        padding: 1.5rem;
+    }
+    
+    .admin-product-info h3 {
+        color: var(--color-accent);
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+    
+    .admin-product-info .price {
+        color: var(--color-accent);
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+    
+    .size-management {
+        margin-top: 1rem;
+    }
+    
+    .size-management h4 {
+        color: var(--color-accent);
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .size-options {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .size-toggle {
+        padding: 8px 16px;
+        background: transparent;
+        border: 1px solid var(--color-accent);
+        color: var(--color-accent);
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+    
+    .size-toggle:hover {
+        background: var(--color-accent);
+        color: var(--color-bg);
+    }
+    
+    .size-toggle.out-of-stock {
+        background: #ff6b6b;
+        border-color: #ff6b6b;
+        color: #ffffff;
+        position: relative;
+    }
+    
+    .size-toggle.out-of-stock::after {
+        content: "Out of Stock";
+        position: absolute;
+        top: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #ff6b6b;
+        color: #ffffff;
+        padding: 4px 8px;
+        border-radius: 8px;
+        font-size: 0.7rem;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+    }
+    
+    .size-toggle.out-of-stock:hover::after {
+        opacity: 1;
+    }
+    
+    /* Animations */
+    @keyframes slideInUp {
+        from {
+        opacity: 0;
+        transform: translateY(30px);
+        }
+        to {
+        opacity: 1;
+        transform: translateY(0);
+        }
+    }
+    
+    @keyframes pulse {
+        0%,
+        100% {
+        transform: scale(1);
+        }
+        50% {
+        transform: scale(1.05);
+        }
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .admin-header-content {
+        flex-direction: column;
+        text-align: center;
+        }
+    
+        .admin-title h1 {
+        font-size: 2rem;
+        }
+    
+        .admin-actions {
+        width: 100%;
+        justify-content: center;
+        }
+    
+        .stats-grid {
+        grid-template-columns: 1fr;
+        }
+    
+        .admin-products-grid {
+        grid-template-columns: 1fr;
+        }
+    
+        .login-card {
+        padding: 2rem 1.5rem;
+        }
+    
+        .login-header h2 {
+        font-size: 1.5rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .admin-title h1 {
+        font-size: 1.5rem;
+        }
+    
+        .stat-card {
+        padding: 1.5rem;
+        flex-direction: column;
+        text-align: center;
+        }
+    
+        .stat-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+        }
+    
+        .admin-actions {
+        flex-direction: column;
+        width: 100%;
+        }
+    
+        .save-btn,
+        .logout-btn {
+        width: 100%;
+        justify-content: center;
+        }
+    }
+    
+    /* Success/Error Messages */
+    .admin-message {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 1rem 2rem;
+        border-radius: 25px;
+        z-index: 10001;
+        animation: slideInRight 0.3s ease;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .admin-message.success {
+        background: #00ff88;
+        color: var(--color-bg);
+        border: 1px solid #00cc6a;
+    }
+    
+    .admin-message.error {
+        background: #ff6b6b;
+        color: #ffffff;
+        border: 1px solid #ff5252;
+    }
+    
+    .admin-message.info {
+        background: var(--color-accent);
+        color: var(--color-bg);
+        border: 1px solid var(--color-muted);
+    }
+    
+    /* Loading States */
+    .loading {
+        opacity: 0.6;
+        pointer-events: none;
+        position: relative;
+    }
+    
+    .loading::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(245, 245, 235, 0.3);
+        border-top: 2px solid var(--color-accent);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        transform: translate(-50%, -50%);
+    }
+    
+    @keyframes spin {
+        0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+        }
+        100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+        }
+    }
+    
