@@ -15,12 +15,13 @@
         }
     
         async init() {
-        this.loadProducts()
-        await this.loadAdminData()
-        this.bindEvents()
-        this.initializeAnimations()
-        this.listenForAdminUpdates()
+        await this.fetchProductsFromFirestore(); // ⬅️ load products dynamically
+        await this.loadAdminData();
+        this.bindEvents();
+        this.initializeAnimations();
+        this.listenForAdminUpdates();
         }
+        
     
         async loadAdminData() {
         try {
@@ -389,19 +390,64 @@
         }, 3000)
         }
     
-        loadProducts() {
-        // Get all product cards from the DOM
-        const productCards = document.querySelectorAll(".product-card")
-        this.products = Array.from(productCards).map((card) => ({
+        async loadProducts() {
+        const productsSnapshot = await window.firestore.getDocs(
+            window.firestore.collection(window.firestoreDb, "products")
+        );
+        
+        const productsGrid = document.getElementById("productsGrid");
+        productsGrid.innerHTML = ""; // clear old products
+        
+        this.products = []; // reset product list
+        
+        productsSnapshot.forEach((doc) => {
+            const product = doc.data();
+            const card = document.createElement("div");
+            card.className = "product-card";
+            card.dataset.id = doc.id;
+            card.dataset.category = product.category;
+            card.dataset.size = product.sizes.join(",");
+            card.dataset.price = product.price;
+            card.dataset.thumbnails = product.thumbnails.join(",");
+        
+            card.innerHTML = `
+            <div class="product-image">
+                <div class="image-placeholder">
+                <img src="${product.image}" alt="${product.name}" class="design-photo">
+                </div>
+                <div class="product-overlay"><button class="quick-view">Quick View</button></div>
+                <div class="product-badge ${product.category}">${product.badge || product.category}</div>
+            </div>
+            <div class="product-info">
+                <h3>${product.name}</h3>
+                <p class="product-description">${product.description}</p>
+                <div class="product-details">
+                <span class="material">${product.material}</span>
+                <span class="fit">${product.fit}</span>
+                </div>
+                <p class="price">${product.price}</p>
+                <div class="product-actions">
+                <button class="add-to-cart">Add to Cart</button>
+                <button class="wishlist"><i class="far fa-heart"></i></button>
+                </div>
+            </div>
+            `;
+        
+            productsGrid.appendChild(card);
+        
+            this.products.push({
             element: card,
-            name: card.querySelector("h3").textContent,
-            category: card.dataset.category,
-            size: card.dataset.size,
-            price: Number.parseFloat(card.dataset.price),
-            description: card.querySelector(".product-description").textContent,
-        }))
-        this.filteredProducts = [...this.products]
+            name: product.name,
+            category: product.category,
+            size: product.sizes.join(","),
+            price: parseFloat(product.price),
+            description: product.description
+            });
+        });
+        
+        this.filteredProducts = [...this.products];
         }
+        
     
         bindEvents() {
         // Search functionality
