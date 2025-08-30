@@ -14,21 +14,63 @@
         this.init()
         }
     
-        init() {
+        async init() {
         this.loadProducts()
-        this.loadAdminData()
+        await this.loadAdminData()
         this.bindEvents()
         this.initializeAnimations()
         this.listenForAdminUpdates()
         }
     
-        loadAdminData() {
-        const adminData = localStorage.getItem("icaruProductsPageData")
-        if (adminData) {
+        async loadAdminData() {
+        try {
+            // Check if Firebase is available
+            if (!window.firestore || !window.firestoreDb) {
+            console.log("Firebase not available, using localStorage");
+            const adminData = localStorage.getItem("icaruProductsPageData")
+            if (adminData) {
+                const data = JSON.parse(adminData)
+                this.outOfStockItems = new Set(data.outOfStock || [])
+                this.deletedProducts = new Set(data.deletedProducts || [])
+                this.updateProductsWithAdminData(data)
+            }
+            return;
+            }
+            
+            // Try to load from Firestore first
+            const productsSnapshot = await window.firestore.getDocs(window.firestore.collection(window.firestoreDb, 'products'));
+            const outOfStockSnapshot = await window.firestore.getDocs(window.firestore.collection(window.firestoreDb, 'outOfStock'));
+            const deletedProductsSnapshot = await window.firestore.getDocs(window.firestore.collection(window.firestoreDb, 'deletedProducts'));
+            
+            if (!productsSnapshot.empty) {
+            const data = {
+                products: productsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })),
+                outOfStock: outOfStockSnapshot.docs.map(doc => doc.data().itemId),
+                deletedProducts: deletedProductsSnapshot.docs.map(doc => doc.data().productId)
+            };
+            this.outOfStockItems = new Set(data.outOfStock || [])
+            this.deletedProducts = new Set(data.deletedProducts || [])
+            this.updateProductsWithAdminData(data)
+            } else {
+            // Fallback to localStorage
+            const adminData = localStorage.getItem("icaruProductsPageData")
+            if (adminData) {
+                const data = JSON.parse(adminData)
+                this.outOfStockItems = new Set(data.outOfStock || [])
+                this.deletedProducts = new Set(data.deletedProducts || [])
+                this.updateProductsWithAdminData(data)
+            }
+            }
+        } catch (error) {
+            console.error("Error loading from Firestore:", error);
+            // Fallback to localStorage
+            const adminData = localStorage.getItem("icaruProductsPageData")
+            if (adminData) {
             const data = JSON.parse(adminData)
             this.outOfStockItems = new Set(data.outOfStock || [])
             this.deletedProducts = new Set(data.deletedProducts || [])
             this.updateProductsWithAdminData(data)
+            }
         }
         }
     
@@ -560,18 +602,47 @@
         this.init()
         }
     
-        init() {
-        this.loadOutOfStockData()
+        async init() {
+        await this.loadOutOfStockData()
         this.bindProductEvents()
         this.initializeImageEffects()
         this.listenForAdminUpdates()
         }
     
-        loadOutOfStockData() {
-        const adminData = localStorage.getItem("icaruProductsPageData")
-        if (adminData) {
+        async loadOutOfStockData() {
+        try {
+            // Check if Firebase is available
+            if (!window.firestore || !window.firestoreDb) {
+            console.log("Firebase not available, using localStorage");
+            const adminData = localStorage.getItem("icaruProductsPageData")
+            if (adminData) {
+                const data = JSON.parse(adminData)
+                this.outOfStockItems = new Set(data.outOfStock || [])
+            }
+            return;
+            }
+            
+            // Try to load from Firestore first
+            const outOfStockSnapshot = await window.firestore.getDocs(window.firestore.collection(window.firestoreDb, 'outOfStock'));
+            
+            if (!outOfStockSnapshot.empty) {
+            this.outOfStockItems = new Set(outOfStockSnapshot.docs.map(doc => doc.data().itemId));
+            } else {
+            // Fallback to localStorage
+            const adminData = localStorage.getItem("icaruProductsPageData")
+            if (adminData) {
+                const data = JSON.parse(adminData)
+                this.outOfStockItems = new Set(data.outOfStock || [])
+            }
+            }
+        } catch (error) {
+            console.error("Error loading from Firestore:", error);
+            // Fallback to localStorage
+            const adminData = localStorage.getItem("icaruProductsPageData")
+            if (adminData) {
             const data = JSON.parse(adminData)
             this.outOfStockItems = new Set(data.outOfStock || [])
+            }
         }
         }
     
@@ -1118,8 +1189,8 @@
     }
     
     // Initialize when DOM is loaded
-    document.addEventListener("DOMContentLoaded", () => {
-        new ProductsPage()
-        new ProductCardEnhancements()
+    document.addEventListener("DOMContentLoaded", async () => {
+        await new ProductsPage().init()
+        await new ProductCardEnhancements().init()
     })
     

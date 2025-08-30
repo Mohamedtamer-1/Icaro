@@ -19,17 +19,59 @@
         this.checkLoginStatus()
         }
     
-        loadProductData() {
-        // Load products from localStorage or fetch from products page
-        const savedData = localStorage.getItem("icaruProductsPageData")       
-
-        if (savedData) {
+        async loadProductData() {
+        try {
+            // Check if Firebase is available
+            if (!window.firestore || !window.firestoreDb) {
+            console.log("Firebase not available, using localStorage");
+            const savedData = localStorage.getItem("icaruProductsPageData")
+            if (savedData) {
+                const data = JSON.parse(savedData)
+                this.products = data.products || []
+                this.outOfStockItems = new Set(data.outOfStock || [])
+                this.deletedProducts = new Set(data.deletedProducts || [])
+            } else {
+                this.fetchProductsFromPage()
+            }
+            return;
+            }
+            
+            // Load products from Firestore first
+            const productsSnapshot = await window.firestore.getDocs(window.firestore.collection(window.firestoreDb, 'products'));
+            const outOfStockSnapshot = await window.firestore.getDocs(window.firestore.collection(window.firestoreDb, 'outOfStock'));
+            const deletedProductsSnapshot = await window.firestore.getDocs(window.firestore.collection(window.firestoreDb, 'deletedProducts'));
+            
+            if (!productsSnapshot.empty) {
+            // Load from Firestore
+            this.products = productsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            this.outOfStockItems = new Set(outOfStockSnapshot.docs.map(doc => doc.data().itemId));
+            this.deletedProducts = new Set(deletedProductsSnapshot.docs.map(doc => doc.data().productId));
+            } else {
+            // Fallback to localStorage for backward compatibility
+            const savedData = localStorage.getItem("icaruProductsPageData")
+            if (savedData) {
+                const data = JSON.parse(savedData)
+                this.products = data.products || []
+                this.outOfStockItems = new Set(data.outOfStock || [])
+                this.deletedProducts = new Set(data.deletedProducts || [])
+                // Migrate to Firestore
+                await this.migrateToFirestore(data);
+            } else {
+                this.fetchProductsFromPage()
+            }
+            }
+        } catch (error) {
+            console.error("Error loading from Firestore:", error);
+            // Fallback to localStorage
+            const savedData = localStorage.getItem("icaruProductsPageData")
+            if (savedData) {
             const data = JSON.parse(savedData)
             this.products = data.products || []
             this.outOfStockItems = new Set(data.outOfStock || [])
             this.deletedProducts = new Set(data.deletedProducts || [])
-        } else {
+            } else {
             this.fetchProductsFromPage()
+            }
         }
         }
     
@@ -203,7 +245,7 @@
         this.saveProductData()
         }
     
-        saveProductData() {
+        async saveProductData() {
             const productsPageData = {
                 products: this.products.filter(p => !this.deletedProducts.has(p.id)),
                 outOfStock: [...this.outOfStockItems],
@@ -211,11 +253,74 @@
                 lastUpdated: new Date().toISOString(),
             }
             
-            localStorage.setItem("icaruProductsPageData", JSON.stringify(productsPageData))
+            try {
+                // Check if Firebase is available
+                if (!window.firestore || !window.firestoreDb) {
+                console.log("Firebase not available, using localStorage only");
+                localStorage.setItem("icaruProductsPageData", JSON.stringify(productsPageData))
+                window.dispatchEvent(new CustomEvent("productsUpdated", { detail: productsPageData }))
+                return;
+                }
+                
+                // Save to Firestore
+                await this.saveToFirestore(productsPageData);
+                
+                // Keep localStorage as backup
+                localStorage.setItem("icaruProductsPageData", JSON.stringify(productsPageData))
+                
+                // Trigger update event for products page
+                window.dispatchEvent(new CustomEvent("productsUpdated", { detail: productsPageData }))
+            } catch (error) {
+                console.error("Error saving to Firestore:", error);
+                // Fallback to localStorage only
+                localStorage.setItem("icaruProductsPageData", JSON.stringify(productsPageData))
+                window.dispatchEvent(new CustomEvent("productsUpdated", { detail: productsPageData }))
+            }
+        }
+        
+        async saveToFirestore(productsPageData) {
+        try {
+            // Save products
+            for (const product of productsPageData.products) {
+            if (product.id) {
+                await window.firestore.setDoc(
+                window.firestore.doc(window.firestoreDb, 'products', product.id.toString()),
+                product
+                );
+            }
+            }
             
-            // Trigger update event for products page
-            window.dispatchEvent(new CustomEvent("productsUpdated", { detail: productsPageData }))
+            // Save out of stock items
+            for (const itemId of productsPageData.outOfStock) {
+            await window.firestore.setDoc(
+                window.firestore.doc(window.firestoreDb, 'outOfStock', itemId),
+                { itemId, timestamp: new Date().toISOString() }
+            );
+            }
             
+            // Save deleted products
+            for (const productId of productsPageData.deletedProducts) {
+            await window.firestore.setDoc(
+                window.firestore.doc(window.firestoreDb, 'deletedProducts', productId.toString()),
+                { productId, timestamp: new Date().toISOString() }
+            );
+            }
+            
+            console.log("Data saved to Firestore successfully");
+        } catch (error) {
+            console.error("Error saving to Firestore:", error);
+            throw error;
+        }
+        }
+        
+        async migrateToFirestore(data) {
+        try {
+            console.log("Migrating data to Firestore...");
+            await this.saveToFirestore(data);
+            console.log("Migration completed successfully");
+        } catch (error) {
+            console.error("Migration failed:", error);
+        }
         }
     
         bindEvents() {
@@ -467,7 +572,7 @@
         }
         }
     
-        updateProductsPage() {
+        async updateProductsPage() {
         // Update the products page data structure
         const productsPageData = {
             products: this.products.filter((p) => !this.deletedProducts.has(p.id)),
@@ -476,14 +581,41 @@
             lastUpdated: new Date().toISOString(),
         }
     
-        localStorage.setItem("icaruProductsPageData", JSON.stringify(productsPageData))
-    
-        // Trigger update event for products page
-        window.dispatchEvent(
+        try {
+            // Check if Firebase is available
+            if (!window.firestore || !window.firestoreDb) {
+            console.log("Firebase not available, using localStorage only");
+            localStorage.setItem("icaruProductsPageData", JSON.stringify(productsPageData))
+            window.dispatchEvent(
+                new CustomEvent("productsUpdated", {
+                detail: productsPageData,
+                }),
+            )
+            return;
+            }
+            
+            // Save to Firestore
+            await this.saveToFirestore(productsPageData);
+            
+            // Keep localStorage as backup
+            localStorage.setItem("icaruProductsPageData", JSON.stringify(productsPageData))
+            
+            // Trigger update event for products page
+            window.dispatchEvent(
             new CustomEvent("productsUpdated", {
-            detail: productsPageData,
+                detail: productsPageData,
             }),
-        )
+            )
+        } catch (error) {
+            console.error("Error updating products page:", error);
+            // Fallback to localStorage only
+            localStorage.setItem("icaruProductsPageData", JSON.stringify(productsPageData))
+            window.dispatchEvent(
+            new CustomEvent("productsUpdated", {
+                detail: productsPageData,
+            }),
+            )
+        }
         }
     
         showMessage(message, type = "info") {
@@ -507,7 +639,7 @@
         }, 3000)
         }
     
-        saveChanges() {
+        async saveChanges() {
         if (this.pendingChanges.length === 0) {
             this.showMessage("No changes to save", "info")
             return
@@ -515,20 +647,25 @@
     
         console.log("[v0] Saving changes:", this.pendingChanges.length)
     
-        // Save all data
-        this.saveProductData()
-        this.updateProductsPage()
+        try {
+            // Save all data
+            await this.saveProductData()
+            await this.updateProductsPage()
     
-        // Show success message with details
-        const changeCount = this.pendingChanges.length
-        this.showMessage(`Successfully saved ${changeCount} change${changeCount > 1 ? "s" : ""}!`, "success")
+            // Show success message with details
+            const changeCount = this.pendingChanges.length
+            this.showMessage(`Successfully saved ${changeCount} change${changeCount > 1 ? "s" : ""}!`, "success")
     
-        // Clear pending changes
-        this.pendingChanges = []
-        this.updateStats()
-        this.updateSaveButton()
+            // Clear pending changes
+            this.pendingChanges = []
+            this.updateStats()
+            this.updateSaveButton()
     
-        console.log("[v0] Changes saved successfully")
+            console.log("[v0] Changes saved successfully")
+        } catch (error) {
+            console.error("[v0] Error saving changes:", error)
+            this.showMessage("Error saving changes. Please try again.", "error")
+        }
         }
     }
     
@@ -538,21 +675,57 @@
         this.init()
         }
     
-        init() {
+        async init() {
         // Listen for admin updates
         window.addEventListener("productsUpdated", (e) => {
             this.handleProductsUpdate(e.detail)
         })
     
         // Load saved product data on page load
-        this.loadProductData()
+        await this.loadProductData()
         }
     
-        loadProductData() {
-        const savedData = localStorage.getItem("icaruProductsPageData")
-        if (savedData) {
+        async loadProductData() {
+        try {
+            // Check if Firebase is available
+            if (!window.firestore || !window.firestoreDb) {
+            console.log("Firebase not available, using localStorage");
+            const savedData = localStorage.getItem("icaruProductsPageData")
+            if (savedData) {
+                const data = JSON.parse(savedData)
+                this.updateProductsDisplay(data)
+            }
+            return;
+            }
+            
+            // Try to load from Firestore first
+            const productsSnapshot = await window.firestore.getDocs(window.firestore.collection(window.firestoreDb, 'products'));
+            const outOfStockSnapshot = await window.firestore.getDocs(window.firestore.collection(window.firestoreDb, 'outOfStock'));
+            const deletedProductsSnapshot = await window.firestore.getDocs(window.firestore.collection(window.firestoreDb, 'deletedProducts'));
+            
+            if (!productsSnapshot.empty) {
+            const data = {
+                products: productsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })),
+                outOfStock: outOfStockSnapshot.docs.map(doc => doc.data().itemId),
+                deletedProducts: deletedProductsSnapshot.docs.map(doc => doc.data().productId)
+            };
+            this.updateProductsDisplay(data);
+            } else {
+            // Fallback to localStorage
+            const savedData = localStorage.getItem("icaruProductsPageData")
+            if (savedData) {
+                const data = JSON.parse(savedData)
+                this.updateProductsDisplay(data)
+            }
+            }
+        } catch (error) {
+            console.error("Error loading from Firestore:", error);
+            // Fallback to localStorage
+            const savedData = localStorage.getItem("icaruProductsPageData")
+            if (savedData) {
             const data = JSON.parse(savedData)
             this.updateProductsDisplay(data)
+            }
         }
         }
     
@@ -866,12 +1039,12 @@
     }
     
     // Initialize admin panel when DOM is loaded
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("DOMContentLoaded", async () => {
         new AdminPanel()
     
         // Initialize products page integration if we're on products page
         if (window.location.pathname.includes("products.html") || document.querySelector(".products-section")) {
-        new ProductsPageIntegration()
+        await new ProductsPageIntegration().init()
         }
     })
     
