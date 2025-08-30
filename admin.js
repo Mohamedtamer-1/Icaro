@@ -46,6 +46,16 @@
             this.products = productsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             this.outOfStockItems = new Set(outOfStockSnapshot.docs.map(doc => doc.data().itemId));
             this.deletedProducts = new Set(deletedProductsSnapshot.docs.map(doc => doc.data().productId));
+            
+            // Ensure localStorage is in sync
+            const productsPageData = {
+                products: this.products.filter(p => !this.deletedProducts.has(p.id)),
+                outOfStock: [...this.outOfStockItems],
+                deletedProducts: [...this.deletedProducts],
+                lastUpdated: new Date().toISOString(),
+            };
+            localStorage.setItem("icaruProductsPageData", JSON.stringify(productsPageData));
+            
             } else {
             // Fallback to localStorage for backward compatibility
             const savedData = localStorage.getItem("icaruProductsPageData")
@@ -75,59 +85,72 @@
         }
         }
     
-        async fetchProductsFromPage() {
+            async fetchProductsFromPage() {
         try {
-            console.log("[v0] Attempting to fetch products from products.html")
-    
+            // Check if Firebase is available and has products
+            if (window.firestore && window.firestoreDb) {
+            console.log("[v0] Checking Firestore for existing products")
+            const productsSnapshot = await window.firestore.getDocs(window.firestore.collection(window.firestoreDb, 'products'));
+            
+            if (!productsSnapshot.empty) {
+                console.log("[v0] Found products in Firestore:", productsSnapshot.docs.length);
+                this.products = productsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                this.saveProductData();
+                return;
+            }
+            }
+            
+            console.log("[v0] No products in Firestore, attempting to fetch from products.html")
+
             const response = await fetch("products.html")
             if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`)
             }
-    
+
             const html = await response.text()
             const parser = new DOMParser()
             const doc = parser.parseFromString(html, "text/html")
             const productCards = doc.querySelectorAll(".product-card")
-    
+
             console.log("[v0] Found product cards:", productCards.length)
-    
+
             if (productCards.length === 0) {
             throw new Error("No product cards found in products.html")
             }
-    
+
             // Convert HTML product cards to admin product objects
             this.products = Array.from(productCards).map((card, index) => {
             const name = card.querySelector("h3")?.textContent?.trim() || `Product ${index + 1}`
             const priceElement = card.querySelector(".price")
             const price = priceElement?.textContent?.trim() || "0.00 EGP"
             const description = card.querySelector(".product-description")?.textContent?.trim() || "Premium quality product"
-    
+
             const materialElement = card.querySelector(".material")
             const fitElement = card.querySelector(".fit")
             const material = materialElement?.textContent?.trim() || "Cotton Blend"
             const fit = fitElement?.textContent?.trim() || "Regular Fit"
-    
+
             const category = card.dataset.category || "casual"
             const sizesData = card.dataset.size || "S,M,L,XL"
             const sizes = sizesData
                 .split(",")
                 .map((s) => s.trim())
                 .filter((s) => s)
-    
+
             const imageElement = card.querySelector("img")
             const image = imageElement?.src || imageElement?.getAttribute("src") || "Images/placeholder.jpg"
-    
+
             const badgeElement = card.querySelector(".product-badge")
             const badge = badgeElement?.textContent?.trim() || ""
-    
+
             const thumbnailsData = card.dataset.thumbnails || image
             const thumbnails = thumbnailsData
                 .split(",")
                 .map((t) => t.trim())
                 .filter((t) => t)
-    
+
             console.log("[v0] Parsed product:", { name, price, category, sizes })
-    
+
             return {
                 id: index + 1,
                 name: name,
@@ -142,12 +165,12 @@
                 badge: badge,
             }
             })
-    
+
             console.log("[v0] Successfully loaded products:", this.products.length)
             this.saveProductData()
         } catch (error) {
             console.error("[v0] Failed to fetch products from page:", error)
-    
+
             const currentPageCards = document.querySelectorAll(".product-card")
             if (currentPageCards.length > 0) {
             console.log("[v0] Found products on current page, using those instead")
@@ -163,7 +186,7 @@
                 const image = card.querySelector("img")?.src || "Images/placeholder.jpg"
                 const badge = card.querySelector(".product-badge")?.textContent?.trim() || ""
                 const thumbnails = (card.dataset.thumbnails || image).split(",").map((t) => t.trim())
-    
+
                 return {
                 id: index + 1,
                 name,
@@ -290,6 +313,10 @@
             }
             }
             
+            // Clear existing collections first
+            await this.clearCollection('outOfStock');
+            await this.clearCollection('deletedProducts');
+            
             // Save out of stock items
             for (const itemId of productsPageData.outOfStock) {
             await window.firestore.setDoc(
@@ -310,6 +337,19 @@
         } catch (error) {
             console.error("Error saving to Firestore:", error);
             throw error;
+        }
+        }
+        
+        async clearCollection(collectionName) {
+        try {
+            const snapshot = await window.firestore.getDocs(window.firestore.collection(window.firestoreDb, collectionName));
+            const deletePromises = snapshot.docs.map(doc => 
+            window.firestore.deleteDoc(window.firestore.doc(window.firestoreDb, collectionName, doc.id))
+            );
+            await Promise.all(deletePromises);
+            console.log(`Cleared ${collectionName} collection`);
+        } catch (error) {
+            console.error(`Error clearing ${collectionName} collection:`, error);
         }
         }
         

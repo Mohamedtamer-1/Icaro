@@ -15,13 +15,12 @@
         }
     
         async init() {
-        await this.fetchProductsFromFirestore(); // ⬅️ load products dynamically
-        await this.loadAdminData();
-        this.bindEvents();
-        this.initializeAnimations();
-        this.listenForAdminUpdates();
+        this.loadProducts()
+        await this.loadAdminData()
+        this.bindEvents()
+        this.initializeAnimations()
+        this.listenForAdminUpdates()
         }
-        
     
         async loadAdminData() {
         try {
@@ -76,12 +75,129 @@
         }
     
         listenForAdminUpdates() {
+        // Listen for admin updates via events
         window.addEventListener("productsUpdated", (e) => {
             this.outOfStockItems = new Set(e.detail.outOfStock || [])
             this.deletedProducts = new Set(e.detail.deletedProducts || [])
             this.updateProductsWithAdminData(e.detail)
             this.showUpdateNotification()
         })
+        
+        // Set up real-time Firestore listeners if available
+        if (window.firestore && window.firestoreDb) {
+            this.setupFirestoreListeners();
+        }
+        }
+        
+        setupFirestoreListeners() {
+        try {
+            // Listen for real-time updates to products collection
+            const productsQuery = window.firestore.query(
+            window.firestore.collection(window.firestoreDb, 'products'),
+            window.firestore.orderBy('name')
+            );
+            
+            window.firestore.onSnapshot(productsQuery, (snapshot) => {
+            console.log("Real-time update received from Firestore");
+            
+            // Update products display
+            if (!snapshot.empty) {
+                const products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                this.updateProductsFromFirestore(products);
+            }
+            }, (error) => {
+            console.error("Error setting up Firestore listener:", error);
+            });
+            
+            // Listen for out of stock updates
+            const outOfStockQuery = window.firestore.query(
+            window.firestore.collection(window.firestoreDb, 'outOfStock')
+            );
+            
+            window.firestore.onSnapshot(outOfStockQuery, (snapshot) => {
+            if (!snapshot.empty) {
+                this.outOfStockItems = new Set(snapshot.docs.map(doc => doc.data().itemId));
+                this.updateStockStatus();
+            }
+            });
+            
+            // Listen for deleted products updates
+            const deletedProductsQuery = window.firestore.query(
+            window.firestore.collection(window.firestoreDb, 'deletedProducts')
+            );
+            
+            window.firestore.onSnapshot(deletedProductsQuery, (snapshot) => {
+            if (!snapshot.empty) {
+                this.deletedProducts = new Set(snapshot.docs.map(doc => doc.data().productId));
+                this.updateDeletedProducts();
+            }
+            });
+            
+        } catch (error) {
+            console.error("Error setting up Firestore listeners:", error);
+        }
+        }
+        
+        updateProductsFromFirestore(products) {
+        const productsGrid = document.getElementById("productsGrid");
+        if (!productsGrid) return;
+        
+        // Clear existing products
+        productsGrid.innerHTML = "";
+        
+        // Create new product cards
+        products.forEach((product) => {
+            const productCard = this.createProductCardFromFirestore(product);
+            productsGrid.appendChild(productCard);
+        });
+        
+        // Update products array for filtering
+        this.products = products.map(product => ({
+            element: document.querySelector(`[data-product-id="${product.id}"]`),
+            name: product.name,
+            category: product.category,
+            size: product.sizes ? product.sizes.join(",") : "S,M,L,XL",
+            price: this.extractPrice(product.price),
+            description: product.description,
+            id: product.id
+        }));
+        
+        this.filteredProducts = [...this.products];
+        this.updateStockStatus();
+        this.updateDeletedProducts();
+        }
+        
+        updateStockStatus() {
+        // Update stock status for all products
+        this.products.forEach(product => {
+            if (product.element) {
+            const addToCartBtn = product.element.querySelector('.add-to-cart');
+            if (addToCartBtn) {
+                // Check if any size is out of stock
+                const sizes = product.size.split(',');
+                const hasOutOfStock = sizes.some(size => 
+                this.outOfStockItems.has(`${product.id}-${size}`)
+                );
+                
+                if (hasOutOfStock) {
+                addToCartBtn.style.opacity = '0.6';
+                addToCartBtn.title = 'Some sizes out of stock';
+                } else {
+                addToCartBtn.style.opacity = '1';
+                addToCartBtn.title = 'Add to cart';
+                }
+            }
+            }
+        });
+        }
+        
+        updateDeletedProducts() {
+        // Hide deleted products
+        this.products.forEach(product => {
+            if (product.element && this.deletedProducts.has(product.id)) {
+            product.element.style.display = 'none';
+            }
+        });
         }
     
         updateProductsWithAdminData(data) {
@@ -391,63 +507,119 @@
         }
     
         async loadProducts() {
-        const productsSnapshot = await window.firestore.getDocs(
-            window.firestore.collection(window.firestoreDb, "products")
-        );
-        
-        const productsGrid = document.getElementById("productsGrid");
-        productsGrid.innerHTML = ""; // clear old products
-        
-        this.products = []; // reset product list
-        
-        productsSnapshot.forEach((doc) => {
-            const product = doc.data();
-            const card = document.createElement("div");
-            card.className = "product-card";
-            card.dataset.id = doc.id;
-            card.dataset.category = product.category;
-            card.dataset.size = product.sizes.join(",");
-            card.dataset.price = product.price;
-            card.dataset.thumbnails = product.thumbnails.join(",");
-        
-            card.innerHTML = `
-            <div class="product-image">
-                <div class="image-placeholder">
-                <img src="${product.image}" alt="${product.name}" class="design-photo">
-                </div>
-                <div class="product-overlay"><button class="quick-view">Quick View</button></div>
-                <div class="product-badge ${product.category}">${product.badge || product.category}</div>
-            </div>
-            <div class="product-info">
-                <h3>${product.name}</h3>
-                <p class="product-description">${product.description}</p>
-                <div class="product-details">
-                <span class="material">${product.material}</span>
-                <span class="fit">${product.fit}</span>
-                </div>
-                <p class="price">${product.price}</p>
-                <div class="product-actions">
-                <button class="add-to-cart">Add to Cart</button>
-                <button class="wishlist"><i class="far fa-heart"></i></button>
-                </div>
-            </div>
-            `;
-        
-            productsGrid.appendChild(card);
-        
-            this.products.push({
-            element: card,
-            name: product.name,
-            category: product.category,
-            size: product.sizes.join(","),
-            price: parseFloat(product.price),
-            description: product.description
-            });
-        });
-        
-        this.filteredProducts = [...this.products];
+        try {
+            // Check if Firebase is available
+            if (!window.firestore || !window.firestoreDb) {
+            console.log("Firebase not available, using DOM products");
+            this.loadProductsFromDOM();
+            return;
+            }
+            
+            // Load products from Firestore
+            const productsSnapshot = await window.firestore.getDocs(window.firestore.collection(window.firestoreDb, 'products'));
+            
+            if (!productsSnapshot.empty) {
+            console.log("Loading products from Firestore:", productsSnapshot.docs.length);
+            
+            // Get the products container
+            const productsGrid = document.getElementById("productsGrid");
+            if (productsGrid) {
+                // Clear existing products
+                productsGrid.innerHTML = "";
+                
+                // Create product cards from Firestore data
+                productsSnapshot.docs.forEach((doc) => {
+                const product = { id: doc.id, ...doc.data() };
+                const productCard = this.createProductCardFromFirestore(product);
+                productsGrid.appendChild(productCard);
+                });
+                
+                // Update products array for filtering
+                this.products = productsSnapshot.docs.map(doc => ({
+                element: document.querySelector(`[data-product-id="${doc.id}"]`),
+                name: doc.data().name,
+                category: doc.data().category,
+                size: doc.data().sizes ? doc.data().sizes.join(",") : "S,M,L,XL",
+                price: this.extractPrice(doc.data().price),
+                description: doc.data().description,
+                id: doc.id
+                }));
+                
+                this.filteredProducts = [...this.products];
+                console.log("Products loaded from Firestore:", this.products.length);
+            }
+            } else {
+            console.log("No products in Firestore, using DOM products");
+            this.loadProductsFromDOM();
+            }
+        } catch (error) {
+            console.error("Error loading products from Firestore:", error);
+            this.loadProductsFromDOM();
+        }
         }
         
+        loadProductsFromDOM() {
+        // Fallback: Get all product cards from the DOM
+        const productCards = document.querySelectorAll(".product-card")
+        this.products = Array.from(productCards).map((card) => ({
+            element: card,
+            name: card.querySelector("h3").textContent,
+            category: card.dataset.category,
+            size: card.dataset.size,
+            price: this.extractPrice(card.querySelector(".price")?.textContent),
+            description: card.querySelector(".product-description")?.textContent || "Premium quality product",
+        }))
+        this.filteredProducts = [...this.products]
+        }
+        
+        extractPrice(priceString) {
+        if (!priceString) return 0;
+        const match = priceString.match(/(\d+(?:\.\d+)?)/);
+        return match ? parseFloat(match[1]) : 0;
+        }
+        
+        createProductCardFromFirestore(product) {
+        const card = document.createElement("div");
+        card.className = "product-card";
+        card.dataset.productId = product.id;
+        card.dataset.category = product.category || "casual";
+        card.dataset.size = product.sizes ? product.sizes.join(",") : "S,M,L,XL";
+        card.dataset.price = this.extractPrice(product.price);
+        card.dataset.thumbnails = product.thumbnails ? product.thumbnails.join(",") : product.image;
+        card.dataset.material = product.material || "Cotton Blend";
+        card.dataset.fit = product.fit || "Regular Fit";
+        
+        const badgeHtml = product.badge ? `<div class="product-badge ${product.badge.toLowerCase().replace(" ", "-")}">${product.badge}</div>` : "";
+        
+        card.innerHTML = `
+            <div class="product-image">
+            <div class="image-placeholder">
+                <img src="${product.image}" alt="${product.name}" class="design-photo">
+            </div>
+            <div class="product-overlay">
+                <button class="quick-view">Quick View</button>
+            </div>
+            ${badgeHtml}
+            </div>
+            <div class="product-info">
+            <h3>${product.name}</h3>
+            <p class="product-description">${product.description}</p>
+            <div class="product-details">
+                <span class="material">${product.material}</span>
+                <span class="fit">${product.fit}</span>
+            </div>
+            <p class="price">${product.price}</p>
+            <div class="product-actions">
+                <button class="add-to-cart">Add to Cart</button>
+                <button class="wishlist">
+                <i class="far fa-heart"></i>
+                </button>
+            </div>
+            </div>
+        `;
+        
+        return card;
+        }
     
         bindEvents() {
         // Search functionality
