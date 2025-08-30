@@ -1,317 +1,332 @@
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Cart & Checkout - Icaru Sweetpants</title>
-        <link rel="stylesheet" href="styles.css">
-        <link rel="stylesheet" href="cart.css">
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    </head>
-    <body>
-        <!-- Navigation -->
-        <nav class="navbar">
-            <div class="nav-container">
-                <div class="nav-logo">
-                    <img src="ICARU_identity/beige_ong.png" alt="ICARU" class="brand-logo">
-                </div>
-                <ul class="nav-menu">
-                    <li class="nav-item">
-                        <a href="index.html" class="nav-link">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="products.html" class="nav-link">Products</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="cart.html" class="nav-link active">Cart</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="contact.html" class="nav-link">Contact</a>
-                    </li>
-                </ul>
-                <div class="hamburger">
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart & Checkout - Icaru Sweetpants</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="cart.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="ICARU_identity/beige_ong.png" alt="ICARU" class="brand-logo">
             </div>
-        </nav>
-
-        <!-- Cart Hero -->
-        <section class="cart-hero">
-            <div class="container">
-                <div class="hero-content">
-                    <h1>Shopping Cart</h1>
-                    <p>Review your items and complete your order</p>
-                </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="products.html" class="nav-link">Products</a>
+                </li>
+                <li class="nav-item">
+                    <a href="cart.html" class="nav-link active">Cart</a>
+                </li>
+                <li class="nav-item">
+                    <a href="contact.html" class="nav-link">Contact</a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
             </div>
-        </section>
+        </div>
+    </nav>
 
-        <!-- Cart Section -->
-        <section class="cart-section">
-            <div class="container">
-                <div class="cart-layout">
-                    <!-- Cart Items -->
-                    <div class="cart-items">
-                        <div class="cart-header">
-                            <h2>Your Cart (<span id="cartCount">0</span> items)</h2>
-                            <button class="clear-cart" id="clearCart">Clear Cart</button>
-                        </div>
-                        
-                        <div class="cart-items-container" id="cartItemsContainer">
-                            <!-- Cart items will be dynamically loaded here -->
-                            <div class="empty-cart" id="emptyCart">
-                                <div class="empty-cart-icon">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </div>
-                                <h3>Your cart is empty</h3>
-                                <p>Looks like you haven't added any items to your cart yet.</p>
-                                <a href="products.html" class="cta-button">Start Shopping</a>
+    <!-- Cart Hero -->
+    <section class="cart-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Shopping Cart</h1>
+                <p>Review your items and complete your order</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Section -->
+    <section class="cart-section">
+        <div class="container">
+            <div class="cart-layout">
+                <!-- Cart Items -->
+                <div class="cart-items">
+                    <div class="cart-header">
+                        <h2>Your Cart (<span id="cartCount">0</span> items)</h2>
+                        <button class="clear-cart" id="clearCart">Clear Cart</button>
+                    </div>
+                    
+                    <div class="cart-items-container" id="cartItemsContainer">
+                        <!-- Cart items will be dynamically loaded here -->
+                        <div class="empty-cart" id="emptyCart">
+                            <div class="empty-cart-icon">
+                                <i class="fas fa-shopping-cart"></i>
                             </div>
+                            <h3>Your cart is empty</h3>
+                            <p>Looks like you haven't added any items to your cart yet.</p>
+                            <a href="products.html" class="cta-button">Start Shopping</a>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Checkout Form -->
-                    <div class="checkout-form">
-                        <div class="form-header">
-                            <h2>Checkout Information</h2>
-                            <p>Please fill in your details to complete your order</p>
-                        </div>
-
-                        <form id="checkoutForm" class="checkout-form-container">
-                            <!-- Personal Information -->
-                            <div class="form-section">
-                                <h3><i class="fas fa-user"></i> Personal Information</h3>
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="firstName">First Name *</label>
-                                        <input type="text" id="firstName" name="firstName" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="lastName">Last Name *</label>
-                                        <input type="text" id="lastName" name="lastName" required>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="phone">Phone Number *</label>
-                                    <input type="tel" id="phone" name="phone" required placeholder="01XXXXXXXXX" pattern="01[0-9]{9}">
-                                    <small class="form-help">Phone number must start with 01</small>
-                                </div>
-                                <div class="form-group">
-                                    <label for="productName">Product Name</label>
-                                    <input type="text" id="productName" name="productName" readonly>
-                                    <small class="form-help">Automatically filled when product is selected</small>
-                                </div>
-                                <div class="form-group">
-                                    <label for="productQuantity">Quantity</label>
-                                    <input type="number" id="productQuantity" name="productQuantity" readonly min="1">
-                                    <small class="form-help">Automatically filled when quantity is selected</small>
-                                </div>
-                                <div class="form-group">
-                                    <label for="productSize">Size</label>
-                                    <input type="text" id="productSize" name="productSize" readonly>
-                                    <small class="form-help">Automatically filled when size is selected</small>
-                                </div>
-                            </div>
-
-                            <!-- Multiple Products Section -->
-                            <div class="form-section" id="multipleProductsSection" style="display: none;">
-                                <h3><i class="fas fa-boxes"></i> Products in Cart</h3>
-                                <div id="productsFieldsContainer">
-                                    <!-- Product fields will be dynamically generated here -->
-                                </div>
-                            </div>
-
-                            <!-- Delivery Information -->
-                            <div class="form-section">
-                                <h3><i class="fas fa-map-marker-alt"></i> Delivery Information</h3>
-                                <div class="form-group">
-                                    <label for="governorate">Governorate *</label>
-                                    <select id="governorate" name="governorate" required>
-                                        <option value="">Select your governorate</option>
-                                        <option value="Alexandria" data-shipping="90">Alexandria (90 EGP)</option>
-                                        <option value="Aswan" data-shipping="120">Aswan (120 EGP)</option>
-                                        <option value="Assiut" data-shipping="100">Assiut (100 EGP)</option>
-                                        <option value="Beheira" data-shipping="95">Beheira (95 EGP)</option>
-                                        <option value="Beni Suef" data-shipping="60">Beni Suef (60 EGP)</option>
-                                        <option value="Cairo" data-shipping="75">Cairo (75 EGP)</option>
-                                        <option value="Dakahlia" data-shipping="90">Dakahlia (90 EGP)</option>
-                                        <option value="Damietta" data-shipping="80">Damietta (80 EGP)</option>
-                                        <option value="Fayoum" data-shipping="40">Fayoum (40 EGP)</option>
-                                        <option value="Gharbia" data-shipping="85">Gharbia (85 EGP)</option>
-                                        <option value="Giza" data-shipping="75">Giza (75 EGP)</option>
-                                        <option value="Ismailia" data-shipping="95">Ismailia (95 EGP)</option>
-                                        <option value="Kafr el-Sheikh" data-shipping="90">Kafr el-Sheikh (90 EGP)</option>
-                                        <option value="Matrouh" data-shipping="100">Matrouh (100 EGP)</option>
-                                        <option value="Minya" data-shipping="90">Minya (90 EGP)</option>
-                                        <option value="Menofia" data-shipping="85">Menofia (85 EGP)</option>
-                                        <option value="New Valley" data-shipping="100">New Valley (100 EGP)</option>
-                                        <option value="North Sinai" data-shipping="140">North Sinai (140 EGP)</option>
-                                        <option value="Port Said" data-shipping="100">Port Said (100 EGP)</option>
-                                        <option value="Qualyubia" data-shipping="100">Qualyubia (100 EGP)</option>
-                                        <option value="Qena" data-shipping="100">Qena (100 EGP)</option>
-                                        <option value="Red Sea" data-shipping="120">Red Sea (120 EGP)</option>
-                                        <option value="Al-Sharqia" data-shipping="90">Al-Sharqia (90 EGP)</option>
-                                        <option value="Sohag" data-shipping="100">Sohag (100 EGP)</option>
-                                        <option value="South Sinai" data-shipping="130">South Sinai (130 EGP)</option>
-                                        <option value="Suez" data-shipping="100">Suez (100 EGP)</option>
-                                        <option value="Luxor" data-shipping="120">Luxor (120 EGP)</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="address">Full Address *</label>
-                                    <textarea id="address" name="address" rows="3" required placeholder="Street address, city, state, zip code"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="city">City *</label>
-                                    <input type="text" id="city" name="city" required>
-                                </div>
-                            </div>
-
-                            <!-- Payment Information -->
-                            <div class="form-section">
-                                <h3><i class="fas fa-credit-card"></i> Payment Information</h3>
-                                <div class="payment-methods">
-                                    <div class="payment-method">
-                                        <input type="checkbox" id="cashOnDelivery" name="paymentMethod" value="cashOnDelivery" required>
-                                        <label for="cashOnDelivery">
-                                            <i class="fas fa-money-bill-wave"></i>
-                                            Cash on Delivery
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Order Summary -->
-                            <div class="order-summary">
-                                <h3><i class="fas fa-receipt"></i> Order Summary</h3>
-                                <div class="summary-items" id="summaryItems">
-                                    <!-- Summary items will be populated here -->
-                                </div>
-                                <div class="summary-totals">
-                                    <div class="summary-row">
-                                        <span>Subtotal:</span>
-                                        <span id="subtotal">0 EGP</span>
-                                    </div>
-                                    <div class="summary-row">
-                                        <span>Shipping:</span>
-                                        <span id="shipping">0 EGP</span>
-                                    </div>
-                                    <div class="summary-row total">
-                                        <span>Total:</span>
-                                        <span id="total">0 EGP</span>
-                                    </div>
-                                </div>
-                            </div>  
-
-                            <!-- Terms and Conditions -->
-                            <div class="form-section">
-                                <div class="form-group checkbox-group">
-                                    <input type="checkbox" id="terms" name="terms" required>
-                                    <label for="terms">
-                                        I agree to the <a href="#" class="terms-link">Terms and Conditions</a> and <a href="#" class="terms-link">Privacy Policy</a> *
-                                    </label>
-                                </div>
-                                <div class="form-group checkbox-group">
-                                    <input type="checkbox" id="newsletter" name="newsletter">
-                                    <label for="newsletter">
-                                        Upon receiving the product, you may request to exchange it or not receive it if you are not satisfied, but you are obligated to pay the product delivery fee.
-                                    </label>
-                                </div>
-                            </div>
-
-                            <!-- Submit Button -->
-                            <div class="form-actions">
-                                <button type="submit" class="submit-order">
-                                    <i class="fas fa-lock"></i>
-                                    Place Order
-                                </button>
-                            </div>
-                        </form>
+                <!-- Checkout Form -->
+                <div class="checkout-form">
+                    <div class="form-header">
+                        <h2>Checkout Information</h2>
+                        <p>Please fill in your details to complete your order</p>
                     </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- Order Confirmation Modal -->
-        <div class="confirmation-modal" id="confirmationModal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <i class="fas fa-check-circle"></i>
-                    <h2>Order Placed Successfully!</h2>
-                </div>
-                <div class="modal-body">
-                    <p>Thank you for your order! We've received your payment and will process your order shortly.</p>
-                    <div class="order-details">
-                        <div class="detail-row">
-                            <span>Order Number:</span>
-                            <span id="orderNumber">#ICARU-2024-001</span>
+                    <form id="checkoutForm" class="checkout-form-container">
+                        <!-- Personal Information -->
+                        <div class="form-section">
+                            <h3><i class="fas fa-user"></i> Personal Information</h3>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="firstName">First Name *</label>
+                                    <input type="text" id="firstName" name="firstName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">Last Name *</label>
+                                    <input type="text" id="lastName" name="lastName" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number *</label>
+                                <input type="tel" id="phone" name="phone" required placeholder="01XXXXXXXXX" pattern="01[0-9]{9}">
+                                <small class="form-help">Phone number must start with 01</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="productName">Product Name</label>
+                                <input type="text" id="productName" name="productName" readonly>
+                                <small class="form-help">Automatically filled when product is selected</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="productQuantity">Quantity</label>
+                                <input type="number" id="productQuantity" name="productQuantity" readonly min="1">
+                                <small class="form-help">Automatically filled when quantity is selected</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="productSize">Size</label>
+                                <input type="text" id="productSize" name="productSize" readonly>
+                                <small class="form-help">Automatically filled when size is selected</small>
+                            </div>
                         </div>
-                        <div class="detail-row">
-                            <span>Total Amount:</span>
-                            <span id="orderTotal">0 EGP</span>
+
+                        <!-- Multiple Products Section -->
+                        <div class="form-section" id="multipleProductsSection" style="display: none;">
+                            <h3><i class="fas fa-boxes"></i> Products in Cart</h3>
+                            <div id="productsFieldsContainer">
+                                <!-- Product fields will be dynamically generated here -->
+                            </div>
                         </div>
-                        <div class="detail-row">
-                            <span>Estimated Delivery:</span>
-                            <span>3-5 business days</span>
+
+                        <!-- Delivery Information -->
+                        <div class="form-section">
+                            <h3><i class="fas fa-map-marker-alt"></i> Delivery Information</h3>
+                            <div class="form-group">
+                                <label for="governorate">Governorate *</label>
+                                <select id="governorate" name="governorate" required>
+                                    <option value="">Select your governorate</option>
+                                    <option value="Alexandria" data-shipping="90">Alexandria (90 EGP)</option>
+                                    <option value="Aswan" data-shipping="120">Aswan (120 EGP)</option>
+                                    <option value="Assiut" data-shipping="100">Assiut (100 EGP)</option>
+                                    <option value="Beheira" data-shipping="95">Beheira (95 EGP)</option>
+                                    <option value="Beni Suef" data-shipping="60">Beni Suef (60 EGP)</option>
+                                    <option value="Cairo" data-shipping="75">Cairo (75 EGP)</option>
+                                    <option value="Dakahlia" data-shipping="90">Dakahlia (90 EGP)</option>
+                                    <option value="Damietta" data-shipping="80">Damietta (80 EGP)</option>
+                                    <option value="Fayoum" data-shipping="40">Fayoum (40 EGP)</option>
+                                    <option value="Gharbia" data-shipping="85">Gharbia (85 EGP)</option>
+                                    <option value="Giza" data-shipping="75">Giza (75 EGP)</option>
+                                    <option value="Ismailia" data-shipping="95">Ismailia (95 EGP)</option>
+                                    <option value="Kafr el-Sheikh" data-shipping="90">Kafr el-Sheikh (90 EGP)</option>
+                                    <option value="Matrouh" data-shipping="100">Matrouh (100 EGP)</option>
+                                    <option value="Minya" data-shipping="90">Minya (90 EGP)</option>
+                                    <option value="Menofia" data-shipping="85">Menofia (85 EGP)</option>
+                                    <option value="New Valley" data-shipping="100">New Valley (100 EGP)</option>
+                                    <option value="North Sinai" data-shipping="140">North Sinai (140 EGP)</option>
+                                    <option value="Port Said" data-shipping="100">Port Said (100 EGP)</option>
+                                    <option value="Qualyubia" data-shipping="100">Qualyubia (100 EGP)</option>
+                                    <option value="Qena" data-shipping="100">Qena (100 EGP)</option>
+                                    <option value="Red Sea" data-shipping="120">Red Sea (120 EGP)</option>
+                                    <option value="Al-Sharqia" data-shipping="90">Al-Sharqia (90 EGP)</option>
+                                    <option value="Sohag" data-shipping="100">Sohag (100 EGP)</option>
+                                    <option value="South Sinai" data-shipping="130">South Sinai (130 EGP)</option>
+                                    <option value="Suez" data-shipping="100">Suez (100 EGP)</option>
+                                    <option value="Luxor" data-shipping="120">Luxor (120 EGP)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Full Address *</label>
+                                <textarea id="address" name="address" rows="3" required placeholder="Street address, city, state, zip code"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="city">City *</label>
+                                <input type="text" id="city" name="city" required>
+                            </div>
                         </div>
-                    </div>
-                    <p>You will receive an email confirmation with tracking details once your order ships.</p>
-                </div>
-                <div class="modal-actions">
-                    <button class="continue-shopping" onclick="window.location.href='products.html'">
-                        Continue Shopping
-                    </button>
-                    <button class="view-orders" onclick="window.location.href='index.html'">
-                        Go to Home
-                    </button>
+
+                        <!-- Deposit Payment Information -->
+                        <div class="form-section deposit-info">
+                            <h3><i class="fas fa-money-bill-wave"></i> Deposit Payment Required</h3>
+                            <div class="deposit-message">
+                                <div class="deposit-alert">
+                                    <i class="fas fa-info-circle"></i>
+                                    <div class="alert-content">
+                                        <h4>Payment Required to Confirm Order</h4>
+                                        <p>You must pay <strong>100 EGP</strong> as a deposit to confirm your order placement.</p>
+                                        <p>Please transfer to: <strong>+201015778481</strong></p>
+                                        <p>Available payment methods: <strong>Vodafone Cash</strong> and <strong>Instapay</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="transferPhone">Your Transfer Phone Number *</label>
+                                    <input type="tel" id="transferPhone" name="transferPhone" required placeholder="01XXXXXXXXX" pattern="01[0-9]{9}">
+                                    <small class="form-help">Phone number you used to transfer the money</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="transferAmount">Transfer Amount (EGP) *</label>
+                                    <input type="number" id="transferAmount" name="transferAmount" required min="100" value="100">
+                                    <small class="form-help">Amount you transferred (minimum 100 EGP)</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Order Summary -->
+                        <div class="order-summary">
+                            <h3><i class="fas fa-receipt"></i> Order Summary</h3>
+                            <div class="summary-items" id="summaryItems">
+                                <!-- Summary items will be populated here -->
+                            </div>
+                            <div class="summary-totals">
+                                <div class="summary-row">
+                                    <span>Subtotal:</span>
+                                    <span id="subtotal">0 EGP</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span>Shipping:</span>
+                                    <span id="shipping">0 EGP</span>
+                                </div>
+                                <div class="summary-row total">
+                                    <span>Total:</span>
+                                    <span id="total">0 EGP</span>
+                                </div>
+                            </div>
+                        </div>  
+
+                        <!-- Terms and Conditions -->
+                        <div class="form-section">
+                            <div class="form-group checkbox-group">
+                                <input type="checkbox" id="terms" name="terms" required>
+                                <label for="terms">
+                                    I agree to the <a href="#" class="terms-link">Terms and Conditions</a> and <a href="#" class="terms-link">Privacy Policy</a> *
+                                </label>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <input type="checkbox" id="newsletter" name="newsletter">
+                                <label for="newsletter">
+                                    Upon receiving the product, you may request to exchange it or not receive it if you are not satisfied but before the delivery agent leaves.
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="form-actions">
+                            <button type="submit" class="submit-order">
+                                <i class="fas fa-lock"></i>
+                                Place Order
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- Footer -->
-        <footer class="footer">
-            <div class="container">
-                <div class="footer-content">
-                    <div class="footer-section">
-                        <h3>Icaru</h3>
-                        <p>Premium sweetpants for the modern lifestyle</p>
-                        <div class="social-links">
-                            <a href="#"><i class="fab fa-facebook"></i></a>
-                            <a href="#"><i class="fab fa-instagram"></i></a>
-                            <a href="#"><i class="fab fa-twitter"></i></a>
-                        </div>
+    <!-- Order Confirmation Modal -->
+    <div class="confirmation-modal" id="confirmationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fas fa-check-circle"></i>
+                <h2>Order Placed Successfully!</h2>
+            </div>
+            <div class="modal-body">
+                <p>Thank you for your order! We've received your payment and will process your order shortly.</p>
+                <div class="order-details">
+                    <div class="detail-row">
+                        <span>Order Number:</span>
+                        <span id="orderNumber">#ICARU-2024-001</span>
                     </div>
-                    <div class="footer-section">
-                        <h4>Quick Links</h4>
-                        <ul>
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="products.html">Products</a></li>
-                            <li><a href="cart.html">Cart</a></li>
-                            <li><a href="contact.html">Contact</a></li>
-                        </ul>
+                    <div class="detail-row">
+                        <span>Total Amount:</span>
+                        <span id="orderTotal">0 EGP</span>
                     </div>
-                    <div class="footer-section">
-                        <h4>Contact Info</h4>
-                        <p><i class="fas fa-phone"></i> +201550398857</p>
-                        <p><i class="fas fa-envelope"></i> icaru1icaru@gmail.com</p>
+                    <div class="detail-row">
+                        <span>Estimated Delivery:</span>
+                        <span>3-5 business days</span>
                     </div>
                 </div>
-                <div class="footer-bottom">
-                    <p>&copy; 2024 Icaru. All rights reserved.</p>
+                <p>You will receive an email confirmation with tracking details once your order ships.</p>
+            </div>
+            <div class="modal-actions">
+                <button class="continue-shopping" onclick="window.location.href='products.html'">
+                    Continue Shopping
+                </button>
+                <button class="view-orders" onclick="window.location.href='index.html'">
+                    Go to Home
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Icaru</h3>
+                    <p>Premium sweetpants for the modern lifestyle</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p><i class="fas fa-phone"></i> +201550398857</p>
+                    <p><i class="fas fa-envelope"></i> icaru1icaru@gmail.com</p>
                 </div>
             </div>
-        </footer>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Icaru. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 
-        <script src="script.js"></script>
-        <script src="cart.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-    <script>
-    (function(){
-        emailjs.init("Y1NJg32MBhh11vMt6"); // من EmailJS Dashboard
-    })();
-    </script>
+    <script src="script.js"></script>
+    <script src="cart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+(function(){
+    emailjs.init("Y1NJg32MBhh11vMt6"); // من EmailJS Dashboard
+})();
+</script>
 
-    </body>
-    </html>
+</body>
+</html>

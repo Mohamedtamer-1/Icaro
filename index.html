@@ -1,417 +1,360 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Icaru - Premium Sweetpants Collection</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .loading-products {
-            text-align: center;
-            padding: 2rem;
-            color: var(--color-accent);
-        }
-        .loading-products p {
-            font-size: 1.1rem;
-            opacity: 0.8;
-        }
-    </style>
-</head>
-<body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <img src="ICARU_identity/beige_ong.png" alt="ICARU" class="brand-logo">
-            </div>
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="index.html" class="nav-link active">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a href="products.html" class="nav-link">Products</a>
-                </li>
-                <li class="nav-item">
-                    <a href="cart.html" class="nav-link">Cart</a>
-                </li>
-                <li class="nav-item">
-                    <a href="contact.html" class="nav-link">Contact</a>
-                </li>
-            </ul>
-            <div class="hamburger">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Slider Revolution -->
-    <section class="hero-slider">
-        <!-- Dystopian Background Effects -->
-        <div class="dystopian-bg">
-            <!-- Replaced video with CSS-based electric effects -->
-            <div class="electric-static"></div>
-            <div class="power-lines"></div>
-            <div class="interference-pattern"></div>
-            <div class="dark-overlay"></div>
-            <div class="grid-pattern"></div>
-            <div class="energy-lines"></div>
-        </div>
-        
-        <div class="slider-container">
-            <div class="slide active">
-                <div class="slide-content">
-                    <div class="slide-text">
-                        <img src="ICARU_identity/beige_ong.png" alt="ICARO" class="slide-word">
-                        <p class="product-description">Feature Unlocked.</p>
-
-                    </div>
-                    <div class="slide-image">
-                        <div class="designs-container">
-                            <div class="design-item design-1" data-direction="up">
-                                <img src="Images/design1.jpg" alt="Design 1" class="design-photo">
-                                <div class="design-overlay"></div>
-                            </div>
-                            <div class="design-item design-2" data-direction="down">
-                                <img src="Images/design2.jpg" alt="Design 2" class="design-photo">
-                                <div class="design-overlay"></div>
-                            </div>
-                            <div class="design-item design-3" data-direction="up">
-                                <img src="Images/design3.jpg" alt="Design 3" class="design-photo">
-                                <div class="design-overlay"></div>
-                            </div>
-                        </div>
-                        <div class="flame-effect"></div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="slide">
-                <div class="slide-content">
-                    <div class="slide-text">
-                        <img src="ICARU_identity/beige_ong.png" alt="ICARO" class="slide-word">
-                        <p class="product-description">Feature Unlocked.</p>
-
-                    </div>
-                    <div class="slide-image">
-                        <div class="designs-container">
-                            <div class="design-item design-1" data-direction="up">
-                                <img src="Images/design4.jpg" alt="Design 4" class="design-photo">
-                                <div class="design-overlay"></div>
-                            </div>
-                            <div class="design-item design-2" data-direction="down">
-                                <img src="Images/design5.jpg" alt="Design 5" class="design-photo">
-                                <div class="design-overlay"></div>
-                            </div>
-                            <div class="design-item design-3" data-direction="up">
-                                <img src="Images/design6.jpg" alt="Design 6" class="design-photo">
-                                <div class="design-overlay"></div>
-                            </div>
-                        </div>
-                        <div class="flame-effect"></div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="slide">
-                <div class="slide-content">
-                    <div class="slide-text">
-                        <img src="ICARU_identity/beige_ong.png" alt="ICARO" class="slide-word">
-                        <p class="product-description">Feature Unlocked.</p>
-
-                    </div>
-                    <div class="slide-image">
-                        <div class="designs-container">
-                            <div class="design-item design-1" data-direction="up">
-                                <img src="Images/design7.jpg" alt="Design 7" class="design-photo">
-                                <div class="design-overlay"></div>
-                            </div>
-                            <div class="design-item design-2" data-direction="down">
-                                <img src="Images/design8.jpg" alt="Design 8" class="design-photo">
-                                <div class="design-overlay"></div>
-                            </div>
-                            <div class="design-item design-3" data-direction="up">
-                                <img src="Images/design9.jpg" alt="Design 9" class="design-photo">
-                                <div class="design-overlay"></div>
-                            </div>
-                        </div>
-                        <div class="flame-effect"></div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="slide">
-                <div class="slide-content">
-                    <div class="slide-text">
-                        <img src="ICARU_identity/beige_ong.png" alt="ICARO" class="slide-word">
-                        <p class="product-description">Feature Unlocked.</p>
-
-                    </div>
-                    <div class="slide-image">
-                        <div class="designs-container">
-                            <div class="design-item design-1" data-direction="up">
-                                <img src="Images/design10.jpg" alt="Design 10" class="design-photo">
-                                <div class="design-overlay"></div>
-                            </div>
-                            <div class="design-item design-2" data-direction="down">
-                                <img src="Images/design11.jpg" alt="Design 11" class="design-photo">
-                                <div class="design-overlay"></div>
-                            </div>
-                            <div class="design-item design-3" data-direction="up">
-                                <img src="Images/design12.jpg" alt="Design 12" class="design-photo">
-                                <div class="design-overlay"></div>
-                            </div>
-                        </div>
-                        <div class="flame-effect"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Icaru - Premium Sweetpants Collection</title>
+        <link rel="stylesheet" href="styles.css">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    </head>
+    <body>
         <!-- Navigation -->
-        <div class="slider-navigation">
-            <div class="nav-arrows">
-                <button class="nav-arrow prev-arrow">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button class="nav-arrow next-arrow">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-            <div class="slider-dots">
-                <span class="dot active" data-slide="0"></span>
-                <span class="dot" data-slide="1"></span>
-                <span class="dot" data-slide="2"></span>
-                <span class="dot" data-slide="3"></span>
-            </div>
-        </div>
-        
-        
-    </section>
-
-    <!-- Featured Products (moved up) -->
-    <section class="featured-products">
-        <div class="container">
-            <div class="section-header">
-                <h2>Featured Products</h2>
-                <p>Discover our most popular styles</p>
-            </div>
-            <div class="products-grid" id="featuredProductsGrid">
-                <!-- Products will be loaded dynamically from Firestore -->
-                <div class="loading-products">
-                    <p>Loading products...</p>
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <img src="ICARU_identity/beige_ong.png" alt="ICARU" class="brand-logo">
+                </div>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link active">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="products.html" class="nav-link">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="cart.html" class="nav-link">Cart</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="contact.html" class="nav-link">Contact</a>
+                    </li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
                 </div>
             </div>
-            <div class="view-all">
-                <a href="products.html" class="cta-button">Discover More Products</a>
-            </div>
-        </div>
-    </section>
+        </nav>
 
-    <!-- Vision & Mission -->
-    <section class="vision-mission">
-        <div class="container">
-            <div class="section-header">
-                <h2>Our Vision & Mission</h2>
-                <p>Driving innovation in comfort wear</p>
+        <!-- Hero Slider Revolution -->
+        <section class="hero-slider">
+            <!-- Dystopian Background Effects -->
+            <div class="dystopian-bg">
+                <!-- Replaced video with CSS-based electric effects -->
+                <div class="electric-static"></div>
+                <div class="power-lines"></div>
+                <div class="interference-pattern"></div>
+                <div class="dark-overlay"></div>
+                <div class="grid-pattern"></div>
+                <div class="energy-lines"></div>
             </div>
-            <div class="vm-grid">
-                <div class="vm-card">
-                    <div class="vm-icon">
-                        <i class="fas fa-eye"></i>
-                    </div>
-                    <h3>Our Vision</h3>
-                    <p>To become a fearless force in global fashion—born in Egypt, built for the world—unlocking a future where style is limitless, identity is bold, and freedom is the true trend.</p>
-                </div>
-                <div class="vm-card">
-                    <div class="vm-icon">
-                        <i class="fas fa-bullseye"></i>
-                    </div>
-                    <h3>Our Mission</h3>
-                    <p>At Icaru, we craft bold and authentic clothing that breaks boundaries, empowers youth, and brings a fresh identity to fashion—made by Egyptians, for a liberated future.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+            
+            <div class="slider-container">
+                <div class="slide active">
+                    <div class="slide-content">
+                        <div class="slide-text">
+                            <img src="ICARU_identity/beige_ong.png" alt="ICARO" class="slide-word">
+                            <p class="product-description">Feature Unlocked.</p>
 
-    <!-- About Us -->
-    <section class="about-us">
-        <div class="container">
-            <div class="about-content">
-                <div class="about-text">
-                    <h2>About Icaru</h2>
-                    <p>Icaru is a youth-driven Egyptian fashion brand inspired by the story of Icarus—a symbol of freedom and breaking limits. We’re here to unlock the future of style with bold designs, fresh identity, and a new vision for fashion. Made by young Egyptians, Icaru isn’t just clothing—it’s creativity, and freedom redefined..</p>
-                    <div class="about-stats">
-                        <div class="stat">
-                            <h3>1000+</h3>
-                            <p>Happy Customers</p>
                         </div>
-                        <div class="stat">
-                            <h3>30+</h3>
-                            <p>Unique Designs</p>
+                        <div class="slide-image">
+                            <div class="designs-container">
+                                <div class="design-item design-1" data-direction="up">
+                                    <img src="Images/design1.jpg" alt="Design 1" class="design-photo">
+                                    <div class="design-overlay"></div>
+                                </div>
+                                <div class="design-item design-2" data-direction="down">
+                                    <img src="Images/design2.jpg" alt="Design 2" class="design-photo">
+                                    <div class="design-overlay"></div>
+                                </div>
+                                <div class="design-item design-3" data-direction="up">
+                                    <img src="Images/design3.jpg" alt="Design 3" class="design-photo">
+                                    <div class="design-overlay"></div>
+                                </div>
+                            </div>
+                            <div class="flame-effect"></div>
                         </div>
                     </div>
                 </div>
-                <div class="about-image">
-                    <div class="image-placeholder">
-                        <img src="ICARU_identity/green_on_beige.png" alt="Icaru Store" class="brand-logo">
-                        <p>Icaru Store</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Icaru</h3>
-                    <p>Premium sweetpants for the modern lifestyle</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                    </div>
-                </div>
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="products.html">Products</a></li>
-                        <li><a href="cart.html">Cart</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                        <li><a href="admin.html">Admin Panel</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Contact Info</h4>
-                    <p><i class="fas fa-phone"></i> +201550398857</p>
-                    <p><i class="fas fa-envelope"></i> icaru1icaru@gmail.com</p>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Icaru. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-        import { getFirestore, collection, doc, setDoc, getDoc, getDocs, deleteDoc, updateDoc, addDoc, query, where, orderBy } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-      
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-          apiKey: "AIzaSyD1rocWT-P3xikAdhIxTNkoxl2V8AXfvNE",
-          authDomain: "icaru-1d1eb.firebaseapp.com",
-          projectId: "icaru-1d1eb",
-          storageBucket: "icaru-1d1eb.firebasestorage.app",
-          messagingSenderId: "552637915359",
-          appId: "1:552637915359:web:d84d8a67d59b86d8b6096a"
-        };
-      
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        
-        // Initialize Firestore
-        const db = getFirestore(app);
-        
-        // Make Firebase and Firestore available globally
-        window.firebaseApp = app;
-        window.firestoreDb = db;
-        window.firestore = {
-          collection,
-          doc,
-          setDoc,
-          getDoc,
-          getDocs,
-          deleteDoc,
-          updateDoc,
-          addDoc,
-          query,
-          where,
-          orderBy
-        };
-      </script>
-      
-    <script src="script.js"></script>
-    
-    <script>
-        // Load featured products from Firestore on homepage
-        async function loadFeaturedProducts() {
-            try {
-                if (!window.firestore || !window.firestoreDb) {
-                    console.log("Firebase not available");
-                    return;
-                }
                 
-                const productsSnapshot = await window.firestore.getDocs(window.firestore.collection(window.firestoreDb, 'products'));
-                
-                if (!productsSnapshot.empty) {
-                    const productsGrid = document.getElementById('featuredProductsGrid');
-                    if (productsGrid) {
-                        productsGrid.innerHTML = '';
-                        
-                        // Show first 3 products as featured
-                        const featuredProducts = productsSnapshot.docs.slice(0, 3);
-                        
-                        featuredProducts.forEach((doc) => {
-                            const product = { id: doc.id, ...doc.data() };
-                            const productCard = createFeaturedProductCard(product);
-                            productsGrid.appendChild(productCard);
-                        });
-                    }
-                }
-            } catch (error) {
-                console.error("Error loading featured products:", error);
-            }
-        }
-        
-        function createFeaturedProductCard(product) {
-            const card = document.createElement('div');
-            card.className = 'product-card';
-            card.dataset.thumbnails = product.thumbnails ? product.thumbnails.join(',') : product.image;
-            
-            const badgeHtml = product.badge ? `<div class="product-badge ${product.badge.toLowerCase().replace(" ", "-")}">${product.badge}</div>` : "";
-            
-            card.innerHTML = `
-                <div class="product-image">
-                    <div class="image-placeholder">
-                        <img src="${product.image}" alt="${product.name}" class="design-photo">
-                        ${badgeHtml}
+                <div class="slide">
+                    <div class="slide-content">
+                        <div class="slide-text">
+                            <img src="ICARU_identity/beige_ong.png" alt="ICARO" class="slide-word">
+                            <p class="product-description">Feature Unlocked.</p>
+
+                        </div>
+                        <div class="slide-image">
+                            <div class="designs-container">
+                                <div class="design-item design-1" data-direction="up">
+                                    <img src="Images/design4.jpg" alt="Design 4" class="design-photo">
+                                    <div class="design-overlay"></div>
+                                </div>
+                                <div class="design-item design-2" data-direction="down">
+                                    <img src="Images/design5.jpg" alt="Design 5" class="design-photo">
+                                    <div class="design-overlay"></div>
+                                </div>
+                                <div class="design-item design-3" data-direction="up">
+                                    <img src="Images/design6.jpg" alt="Design 6" class="design-photo">
+                                    <div class="design-overlay"></div>
+                                </div>
+                            </div>
+                            <div class="flame-effect"></div>
+                        </div>
                     </div>
                 </div>
-                <div class="product-info">
-                    <h3>${product.name}</h3>
-                    <p class="price">${product.price}</p>
-                    <a href="products.html" class="cta-button">View in Products page</a>
+                
+                <div class="slide">
+                    <div class="slide-content">
+                        <div class="slide-text">
+                            <img src="ICARU_identity/beige_ong.png" alt="ICARO" class="slide-word">
+                            <p class="product-description">Feature Unlocked.</p>
+
+                        </div>
+                        <div class="slide-image">
+                            <div class="designs-container">
+                                <div class="design-item design-1" data-direction="up">
+                                    <img src="Images/design7.jpg" alt="Design 7" class="design-photo">
+                                    <div class="design-overlay"></div>
+                                </div>
+                                <div class="design-item design-2" data-direction="down">
+                                    <img src="Images/design8.jpg" alt="Design 8" class="design-photo">
+                                    <div class="design-overlay"></div>
+                                </div>
+                                <div class="design-item design-3" data-direction="up">
+                                    <img src="Images/design9.jpg" alt="Design 9" class="design-photo">
+                                    <div class="design-overlay"></div>
+                                </div>
+                            </div>
+                            <div class="flame-effect"></div>
+                        </div>
+                    </div>
                 </div>
-            `;
+                
+                <div class="slide">
+                    <div class="slide-content">
+                        <div class="slide-text">
+                            <img src="ICARU_identity/beige_ong.png" alt="ICARO" class="slide-word">
+                            <p class="product-description">Feature Unlocked.</p>
+
+                        </div>
+                        <div class="slide-image">
+                            <div class="designs-container">
+                                <div class="design-item design-1" data-direction="up">
+                                    <img src="Images/design10.jpg" alt="Design 10" class="design-photo">
+                                    <div class="design-overlay"></div>
+                                </div>
+                                <div class="design-item design-2" data-direction="down">
+                                    <img src="Images/design11.jpg" alt="Design 11" class="design-photo">
+                                    <div class="design-overlay"></div>
+                                </div>
+                                <div class="design-item design-3" data-direction="up">
+                                    <img src="Images/design12.jpg" alt="Design 12" class="design-photo">
+                                    <div class="design-overlay"></div>
+                                </div>
+                            </div>
+                            <div class="flame-effect"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             
-            return card;
-        }
+            <!-- Navigation -->
+            <div class="slider-navigation">
+                <div class="nav-arrows">
+                    <button class="nav-arrow prev-arrow">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="nav-arrow next-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="slider-dots">
+                    <span class="dot active" data-slide="0"></span>
+                    <span class="dot" data-slide="1"></span>
+                    <span class="dot" data-slide="2"></span>
+                    <span class="dot" data-slide="3"></span>
+                </div>
+            </div>
+            
+            
+        </section>
+
+        <!-- Featured Products (moved up) -->
+        <section class="featured-products">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Featured Products</h2>
+                    <p>Discover our most popular styles</p>
+                </div>
+                <div class="products-grid">
+                    <div class="product-card" data-thumbnails="Images/design1a.jpg,Images/design1b.jpg,Images/design1c.jpg">
+                        <div class="product-image">
+                            <div class="image-placeholder"><img src="Images/design1.jpg" alt="Classic Comfort" class="design-photo"></div>
+                        </div>
+                        <div class="product-info">
+                            <h3>Classic Comfort</h3>
+                            <p class="price">20% off - check it now </p>
+                            <a href="products.html" class="cta-button">View in Products page</a>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <div class="image-placeholder"><img src="Images/design2.jpg" alt="Sport Style" class="design-photo"></div>
+                        </div>
+                        <div class="product-info">
+                            <h3>Sport Style</h3>
+                            <p class="price">20% off - check it now </p>
+                            <a href="products.html" class="cta-button">View in Products page</a>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <div class="image-placeholder"><img src="Images/design3.jpg" alt="Premium Fit" class="design-photo"></div>
+                        </div>
+                        <div class="product-info">
+                            <h3>Premium Fit</h3>
+                            <p class="price">20% off - check it now </p>
+                            <a href="products.html" class="cta-button">View in Products page</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="view-all">
+                    <a href="products.html" class="cta-button">Discover More Products</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Vision & Mission -->
+        <section class="vision-mission">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Our Vision & Mission</h2>
+                    <p>Driving innovation in comfort wear</p>
+                </div>
+                <div class="vm-grid">
+                    <div class="vm-card">
+                        <div class="vm-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h3>Our Vision</h3>
+                        <p>To become a fearless force in global fashion—born in Egypt, built for the world—unlocking a future where style is limitless, identity is bold, and freedom is the true trend.</p>
+                    </div>
+                    <div class="vm-card">
+                        <div class="vm-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h3>Our Mission</h3>
+                        <p>At Icaru, we craft bold and authentic clothing that breaks boundaries, empowers youth, and brings a fresh identity to fashion—made by Egyptians, for a liberated future.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Us -->
+        <section class="about-us">
+            <div class="container">
+                <div class="about-content">
+                    <div class="about-text">
+                        <h2>About Icaru</h2>
+                        <p>Icaru is a youth-driven Egyptian fashion brand inspired by the story of Icarus—a symbol of freedom and breaking limits. We’re here to unlock the future of style with bold designs, fresh identity, and a new vision for fashion. Made by young Egyptians, Icaru isn’t just clothing—it’s creativity, and freedom redefined..</p>
+                        <div class="about-stats">
+                            <div class="stat">
+                                <h3>1000+</h3>
+                                <p>Happy Customers</p>
+                            </div>
+                            <div class="stat">
+                                <h3>30+</h3>
+                                <p>Unique Designs</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                        <div class="image-placeholder">
+                            <img src="ICARU_identity/green_on_beige.png" alt="Icaru Store" class="brand-logo">
+                            <p>Icaru Store</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         
-        // Load featured products when page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            // Wait a bit for Firebase to initialize
-            setTimeout(loadFeaturedProducts, 1000);
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h3>Icaru</h3>
+                        <p>Premium sweetpants for the modern lifestyle</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-facebook"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="products.html">Products</a></li>
+                            <li><a href="cart.html">Cart</a></li>
+                            <li><a href="contact.html">Contact</a></li>
+                            <li><a href="admin.html">Admin Panel</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Contact Info</h4>
+                        <p><i class="fas fa-phone"></i> +201550398857</p>
+                        <p><i class="fas fa-envelope"></i> icaru1icaru@gmail.com</p>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2024 Icaru. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+        <script type="module">
+            // Import the functions you need from the SDKs you need
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+            import { getFirestore, collection, doc, setDoc, getDoc, getDocs, deleteDoc, updateDoc, addDoc, query, where, orderBy } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        
+            // Your web app's Firebase configuration
+            const firebaseConfig = {
+            apiKey: "AIzaSyD1rocWT-P3xikAdhIxTNkoxl2V8AXfvNE",
+            authDomain: "icaru-1d1eb.firebaseapp.com",
+            projectId: "icaru-1d1eb",
+            storageBucket: "icaru-1d1eb.firebasestorage.app",
+            messagingSenderId: "552637915359",
+            appId: "1:552637915359:web:d84d8a67d59b86d8b6096a"
+            };
+        
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
             
-            // Debug: Check Firebase connection
-            setTimeout(() => {
-                if (window.firestore && window.firestoreDb) {
-                    console.log("✅ Firebase is connected and ready");
-                    console.log("Firestore DB:", window.firestoreDb);
-                } else {
-                    console.log("❌ Firebase is not available");
-                }
-            }, 2000);
-        });
-    </script>
-</body>
-</html>
+            // Initialize Firestore
+            const db = getFirestore(app);
+            
+            // Make Firebase and Firestore available globally
+            window.firebaseApp = app;
+            window.firestoreDb = db;
+            window.firestore = {
+            collection,
+            doc,
+            setDoc,
+            getDoc,
+            getDocs,
+            deleteDoc,
+            updateDoc,
+            addDoc,
+            query,
+            where,
+            orderBy
+            };
+        </script>
+        
+        <script src="script.js"></script>
+    </body>
+    </html>
